@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Button, Pagination } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Pagination } from '@mui/material';
 import api from './services/api'; // Import the centralized Axios instance
 
 const UserList = () => {

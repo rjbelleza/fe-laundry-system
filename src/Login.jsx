@@ -31,7 +31,7 @@ const Login = () => {
             maxWidth
             disableGutters
             sx={{
-                backgroundImage: 'url(images/bg-image-lowbrightness.jpg)',
+                backgroundImage: 'url(images/laundry-bg-low.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 width: '100wh',
