@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Button, Box } from '@mui/material';
+import { Container, Button, Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -76,7 +76,43 @@ const Body = () => {
             }}
         >
             <Box sx={{ display: 'flex', width: '100%', flexWrap: 'wrap' }}>
-                <Container sx={{ height: '100vh', minWidth: '450px', flex: 1 }} />
+                <Container sx={{
+                                display: 'flex', 
+                                justifyContent: 'center',
+                                alignItems: 'center', 
+                                height: '100vh', 
+                                minWidth: '450px', 
+                                flex: 1,
+                            }}
+                >
+                    <Box sx={{
+                             display: 'flex',
+                             justifyContent: 'center',
+                             alignItems: 'flex-end',
+                             width: '70%', 
+                             height: '70%',
+                             backgroundImage: 'url(images/poster.jpg)',
+                             backgroundSize: 'cover',
+                             backgroundPosition: 'center',
+                             borderRadius: '10px',
+                             boxShadow: '10px 10px 15px rgba(0, 0, 0, 0.7)',
+                        }}
+                    >
+                        <Box sx={{
+                            boxSizing: 'border-box',
+                            display: 'flex',
+                            alignItems: 'center',
+                            backgroundColor: 'rgba(237, 121, 43)',
+                            height: '40px',
+                            minWidth: '250px',
+                            borderRadius: '20px',
+                            marginBottom: '10px',
+                            padding: '15px',
+                        }}>
+                            <Typography sx={{color: 'rgba(250, 250, 250)'}}>Rating</Typography>
+                        </Box>
+                    </Box>
+                </Container>
                 <Container
                     sx={{
                         height: '100vh',
