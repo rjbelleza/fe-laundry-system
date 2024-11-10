@@ -1,6 +1,7 @@
 import React from 'react';
-import { Container, Button, Box, Typography } from '@mui/material';
+import { Container, Button, Box, Typography, Paper, Rating } from '@mui/material';
 import { Link } from 'react-router-dom';
+import './fonts/fonts.css';
 
 const Header = () => {
     return (
@@ -31,6 +32,7 @@ const Header = () => {
                         alt="Shop logo"
                         src="images/shopLogo.png"
                         style={{ height: '50px' }}
+                        title="Business logo"
                     />
                 </Link>
                 <Box
@@ -98,19 +100,23 @@ const Body = () => {
                              boxShadow: '10px 10px 15px rgba(0, 0, 0, 0.7)',
                         }}
                     >
-                        <Box sx={{
-                            boxSizing: 'border-box',
-                            display: 'flex',
-                            alignItems: 'center',
-                            backgroundColor: 'rgba(237, 121, 43)',
-                            height: '40px',
-                            minWidth: '250px',
-                            borderRadius: '20px',
-                            marginBottom: '10px',
-                            padding: '15px',
-                        }}>
-                            <Typography sx={{color: 'rgba(250, 250, 250)'}}>Rating</Typography>
-                        </Box>
+                        <Paper elevation={10} title="Customer rating"
+                               sx={{
+                                    boxSizing: 'border-box',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    minWidth: '200px', 
+                                    height: '70px', 
+                                    marginBottom: '10px',
+                                    padding: '10px'
+                                }}
+                        >
+                            <Typography color="primary" sx={{fontFamily: 'JosefinSans-VariableFont'}}>
+                                Customer Satisfaction
+                            </Typography>
+                            <Rating name="read-only" value={3.5} readOnly />
+                        </Paper>
                     </Box>
                 </Container>
                 <Container
