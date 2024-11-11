@@ -16,6 +16,7 @@ const Header = () => {
                 backgroundColor: 'white',
                 minWidth: '100%',
                 height: '70px',
+                zIndex: '2'
             }}
         >
             <Container
@@ -75,18 +76,27 @@ const Body = () => {
                 backgroundPosition: 'center',
                 display: 'flex',
                 width: '100%',
+                overflow: 'hidden',
+                minHeight: '100vh',
             }}
         >
-            <Box sx={{ display: 'flex', width: '100%', flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', width: '100%', flexWrap: 'wrap'}}>
                 <Container sx={{
                                 display: 'flex', 
                                 justifyContent: 'center',
                                 alignItems: 'center', 
-                                height: '100vh', 
-                                minWidth: '450px', 
+                                minHeight: '570px', 
+                                minWidth: '550px', 
                                 flex: 1,
                             }}
                 >
+                    <img src="images/bookNow.png" 
+                            height="150px" 
+                            width="150px"
+                            alt=""
+                            style={{marginRight: '-120px', marginTop: '-400px', zIndex: '1'}}
+                        >
+                    </img>
                     <Box sx={{
                              display: 'flex',
                              justifyContent: 'center',
@@ -106,27 +116,87 @@ const Body = () => {
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
+                                    justifyContent: 'center',
                                     minWidth: '200px', 
-                                    height: '70px', 
+                                    height: '75px', 
                                     marginBottom: '10px',
                                     padding: '10px'
                                 }}
                         >
-                            <Typography color="primary" sx={{fontFamily: 'JosefinSans-VariableFont'}}>
-                                Customer Satisfaction
+                            <Typography sx={{fontFamily: 'SourGummy-normal', color: 'rgba(109, 31, 133)'}}>
+                                CUSTOMER SATISFACTION
                             </Typography>
-                            <Rating name="read-only" value={3.5} readOnly />
+                            <Box sx={{
+                                     display: 'flex',
+                                     justifyContent: 'center',
+                                     width: '140px', 
+                                     height: '100%', 
+                                     padding: '5px', 
+                                     backgroundColor: 'rgba(110, 26, 127)',
+                                     borderRadius: '20px',
+                                 }}
+                            >
+                                <Rating name="read-only" value={4} readOnly />
+                            </Box>
                         </Paper>
                     </Box>
                 </Container>
                 <Container
                     sx={{
-                        height: '100vh',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'space-evenly',
+                        maxHeight: '100%',
                         minWidth: '50%',
                         backgroundColor: 'rgba(0, 0, 0, 0.5)',
                         flex: 1,
                     }}
-                />
+                >
+                    <Typography sx={{fontFamily: 'AbrilFatface', fontSize: '60px', marginTop: '40px', color: 'rgba(240, 213, 151)'}}>
+                        "Laundry Made
+                    </Typography>
+                    <Typography sx={{fontFamily: 'Caveat', fontSize: '50px', color: 'rgba(247, 236, 79)'}}>
+                        Effortless."
+                    </Typography>
+                    <Typography sx={{marginRight: '40px', marginLeft: '40px', marginBottom: '70px', color: 'rgba(204, 199, 190)'}}><br/>
+                        "Meet Convenient Laundry: the ultimate solution for hassle-free laundry management. 
+                        From scheduling pickups to tracking deliveries, Convenient Laundry makes managing your 
+                        laundry effortless and efficient. <br/><br/> Enjoy a seamless experience with real-time 
+                        updates and personalized service, so you can focus on what really matters while 
+                        we take care of your laundry needs."
+                    </Typography>
+                    <Box sx={{
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            width: '100%', 
+                            height: '50px',
+                            gap: '30px',
+                        }}
+                    >
+                        <Button variant="contained" color="secondary">
+                            Book Now
+                        </Button>
+                        <Button variant="contained" color="success"> 
+                            Create Account
+                        </Button>
+                    </Box>
+                    <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '100%', 
+                            height: '80px', 
+                            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                            marginTop: '30px',
+                        }}
+                    >
+                        <Typography sx={{color: 'rgba(250, 250, 250)'}}>
+                            We are open
+                        </Typography>
+                    </Box>
+                </Container>
+
             </Box>
         </Box>
     );

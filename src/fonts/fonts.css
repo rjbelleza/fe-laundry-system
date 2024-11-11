@@ -2,3 +2,23 @@
     font-family: JosefinSans-VariableFont;
     src: url(JosefinSans-VariableFont_wght.ttf);
 }
+
+@font-face {
+    font-family: SourGummy-normal;
+    src: url(SourGummy-VariableFont_wdth\,wght.ttf);
+}
+
+@font-face {
+    font-family: SourGummy-SemiBold;
+    src: url(SourGummy_Expanded-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: AbrilFatface;
+    src: url(AbrilFatface-Regular.ttf);
+}
+
+@font-face {
+    font-family: Caveat;
+    src: url(Caveat-VariableFont_wght.ttf);
+}
