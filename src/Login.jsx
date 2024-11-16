@@ -111,11 +111,13 @@ const Login = () => {
                     <Button variant="contained" color="secondary" type="submit" size="large" fullWidth>
                         Login
                     </Button>
-                    {error && (
-                        <Typography color="error" sx={{ fontSize: '13px', marginTop: '10px' }}>
-                            {error}
-                        </Typography>
-                    )}
+                    <Container maxWidth sx={{height: '20px'}}>
+                        {error && (
+                            <Typography color="error" sx={{ fontSize: '13px', marginTop: '10px' }}>
+                                {error}
+                            </Typography>
+                        )}
+                    </Container>
                     <Typography variant="body2" align="center" sx={{ marginTop: '35px' }}>
                         <Link href="/forgot-password" color="primary">
                             Forgot your password?

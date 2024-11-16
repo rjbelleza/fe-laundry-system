@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Button, Box, Typography, Paper, Rating } from '@mui/material';
+import { Container, Button, Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import './fonts/fonts.css';
 
@@ -9,7 +9,7 @@ const Header = () => {
             component="header"
             sx={{
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'center', 
                 position: 'sticky',
                 top: 0,
                 boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
@@ -110,35 +110,6 @@ const Body = () => {
                              boxShadow: '10px 10px 15px rgba(0, 0, 0, 0.7)',
                         }}
                     >
-                        <Paper elevation={10} title="Customer rating"
-                               sx={{
-                                    boxSizing: 'border-box',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    minWidth: '200px', 
-                                    height: '75px', 
-                                    marginBottom: '10px',
-                                    padding: '10px'
-                                }}
-                        >
-                            <Typography sx={{fontFamily: 'SourGummy-normal', color: 'rgba(109, 31, 133)'}}>
-                                CUSTOMER SATISFACTION
-                            </Typography>
-                            <Box sx={{
-                                     display: 'flex',
-                                     justifyContent: 'center',
-                                     width: '140px', 
-                                     height: '100%', 
-                                     padding: '5px', 
-                                     backgroundColor: 'rgba(110, 26, 127)',
-                                     borderRadius: '20px',
-                                 }}
-                            >
-                                <Rating name="read-only" value={4} readOnly />
-                            </Box>
-                        </Paper>
                     </Box>
                 </Container>
                 <Container
@@ -174,7 +145,7 @@ const Body = () => {
                             gap: '30px',
                         }}
                     >
-                        <Button variant="contained" color="secondary">
+                        <Button component={Link} to="/login" variant="contained" color="secondary">
                             Book Now
                         </Button>
                         <Button variant="contained" color="success"> 
