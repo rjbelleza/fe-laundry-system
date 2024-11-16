@@ -164,8 +164,20 @@ const Body = () => {
                             marginTop: '30px',
                         }}
                     >
-                        <Typography sx={{color: 'rgba(250, 250, 250)'}}>
-                            We are open
+                        <Typography sx={{
+                                        display: 'flex', 
+                                        gap: '5px', 
+                                        color: 'rgba(250, 250, 250)',
+                                        alignItems: 'center',
+                                    }}>
+                            We are 
+                            <Box sx={{
+                                    padding: '10px',
+                                    backgroundColor: 'green',
+                                    borderRadius: '30px',
+                                }}>
+                                Open
+                            </Box>
                         </Typography>
                     </Box>
                 </Container>
