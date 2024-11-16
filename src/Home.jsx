@@ -1,5 +1,8 @@
 import React from 'react';
 import { Container, Button, Box, Typography } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from './Theme';
 import { Link } from 'react-router-dom';
 import './fonts/fonts.css';
 
@@ -131,11 +134,9 @@ const Body = () => {
                         Effortless."
                     </Typography>
                     <Typography sx={{marginRight: '40px', marginLeft: '40px', marginBottom: '70px', color: 'rgba(204, 199, 190)'}}><br/>
-                        "Meet Convenient Laundry: the ultimate solution for hassle-free laundry management. 
-                        From scheduling pickups to tracking deliveries, Convenient Laundry makes managing your 
-                        laundry effortless and efficient. <br/><br/> Enjoy a seamless experience with real-time 
-                        updates and personalized service, so you can focus on what really matters while 
-                        we take care of your laundry needs."
+                        Convenient Laundry simplifies laundry management with features like scheduling pickups, tracking deliveries, and real-time updates. <br/><br/>
+                        It offers personalized services to ensure a seamless, hassle-free experience, letting users focus on what matters while their laundry 
+                        is handled efficiently.
                     </Typography>
                     <Box sx={{
                             display: 'flex', 
@@ -143,12 +144,13 @@ const Body = () => {
                             width: '100%', 
                             height: '50px',
                             gap: '30px',
+                            marginBottom: '20px',
                         }}
                     >
-                        <Button component={Link} to="/login" variant="contained" color="secondary">
+                        <Button component={Link} to="/login" variant="contained" color="primary">
                             Book Now
                         </Button>
-                        <Button variant="contained" color="success"> 
+                        <Button variant="outlined" color="success"> 
                             Create Account
                         </Button>
                     </Box>
@@ -175,10 +177,13 @@ const Body = () => {
 
 const Home = () => {
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', minWidth: '100%' }}>
-            <Header />
-            <Body />
-        </Box>
+        <ThemeProvider theme={theme}> 
+            <CssBaseline />
+            <Box sx={{ display: 'flex', flexDirection: 'column', minWidth: '100%' }}>
+                <Header />
+                <Body />
+            </Box>
+        </ThemeProvider>
     );
 };
 

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography, Link } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from './Theme';
 import { useNavigate } from 'react-router-dom';
 import api from './services/api'; // Import the centralized Axios instance
 
@@ -27,105 +30,108 @@ const Login = () => {
     };
 
     return (
-        <Container
-            maxWidth
-            disableGutters
-            sx={{
-                backgroundImage: 'url(images/laundry-bg-low.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                width: '100vw',
-                height: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
+        <ThemeProvider theme={theme}> 
+            <CssBaseline />
             <Container
+                maxWidth
+                disableGutters
                 sx={{
-                    boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.6)',
+                    backgroundImage: 'url(images/laundry-bg-low.jpg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    width: '100vw',
+                    height: '100vh',
                     display: 'flex',
-                    flexDirection: 'column',
+                    justifyContent: 'center',
                     alignItems: 'center',
-                    height: '370px',
-                    width: '350px',
-                    zIndex: '999',
-                    backgroundColor: 'white',
-                    borderRadius: '5px',
                 }}
             >
-                <Typography
-                    variant="h4"
-                    component="h1"
-                    color="secondary"
-                    gutterBottom
-                    sx={{ fontFamily: 'fantasy', marginTop: '10px' }}
+                <Container
+                    sx={{
+                        boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.6)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        height: '370px',
+                        width: '350px',
+                        zIndex: '999',
+                        backgroundColor: 'white',
+                        borderRadius: '5px',
+                    }}
                 >
-                    Login
-                </Typography>
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-                    <TextField
-                        color="secondary"
-                        label="Email"
-                        fullWidth
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        margin="normal"
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                    borderColor: 'purple',
-                                },
-                                '&:hover fieldset': {
-                                    borderColor: 'blue',
-                                },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: 'blue',
-                                },
-                            },
-                        }}
-                    />
-                    <TextField
-                        color="secondary"
-                        label="Password"
-                        fullWidth
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        margin="normal"
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                    borderColor: 'purple',
-                                },
-                                '&:hover fieldset': {
-                                    borderColor: 'blue',
-                                },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: 'blue',
-                                },
-                            },
-                            marginBottom: '20px',
-                        }}
-                    />
-                    <Button variant="contained" color="secondary" type="submit" size="large" fullWidth>
-                        Login
-                    </Button>
-                    <Container maxWidth sx={{height: '20px'}}>
-                        {error && (
-                            <Typography color="error" sx={{ fontSize: '13px', marginTop: '10px' }}>
-                                {error}
-                            </Typography>
-                        )}
-                    </Container>
-                    <Typography variant="body2" align="center" sx={{ marginTop: '35px' }}>
-                        <Link href="/forgot-password" color="primary">
-                            Forgot your password?
-                        </Link>
+                    <Typography
+                        variant="h5"
+                        component="h1"
+                        color="primary"
+                        gutterBottom
+                        sx={{ fontFamily: 'fantasy', marginTop: '15px' }}
+                    >
+                        Welcome Back!
                     </Typography>
-                </form>
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                        <TextField
+                            color="secondary"
+                            label="Email"
+                            fullWidth
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            margin="normal"
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: '#EE66A6',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#D91656',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#EE66A6',
+                                    },
+                                },
+                            }}
+                        />
+                        <TextField
+                            color="secondary"
+                            label="Password"
+                            fullWidth
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            margin="normal"
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: '#EE66A6',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#D91656',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#EE66A6',
+                                    },
+                                },
+                                marginBottom: '20px',
+                            }}
+                        />
+                        <Button variant="contained" color="primary" type="submit" size="large" fullWidth>
+                            Login
+                        </Button>
+                        <Container maxWidth sx={{height: '20px'}}>
+                            {error && (
+                                <Typography color="error" sx={{ fontSize: '13px', marginTop: '10px' }}>
+                                    {error}
+                                </Typography>
+                            )}
+                        </Container>
+                        <Typography variant="body2" align="center" sx={{ marginTop: '35px' }}>
+                            <Link href="/forgot-password" color="primary">
+                                Forgot your password?
+                            </Link>
+                        </Typography>
+                    </form>
+                </Container>
             </Container>
-        </Container>
+        </ThemeProvider>
     );
 };
 
