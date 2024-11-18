@@ -22,3 +22,9 @@
     font-family: Caveat;
     src: url(Caveat-VariableFont_wght.ttf);
 }
+
+@font-face {
+    font-family: Poppins-ExtraBold;
+    src: url(Poppins-ExtraBold.ttf);
+}
+
