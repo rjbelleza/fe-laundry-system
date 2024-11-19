@@ -28,3 +28,17 @@
     src: url(Poppins-ExtraBold.ttf);
 }
 
+@font-face {
+    font-family: Poppins-SemiBold;
+    src: url(Poppins-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: Poppins-Bold;
+    src: url(Poppins-Bold.ttf);
+}
+
+@font-face {
+    font-family: Poppins-Regular;
+    src: url(Poppins-Regular.ttf);
+}
