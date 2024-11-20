@@ -154,7 +154,7 @@ const Body = () => {
                         <Button component={Link} to="/login" variant="contained" color="primary">
                             Book Now
                         </Button>
-                        <Button variant="outlined" color="success"> 
+                        <Button component={Link} variant="outlined" color="success" to="/register"> 
                             Create Account
                         </Button>
                     </Box>
