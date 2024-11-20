@@ -13,7 +13,10 @@ const theme = createTheme({
     success: {
       main: '#FFEB55',
       contrastText: '#ffffff',
-    }
+    },
+    info: {
+      main: '#ffffff',
+    },
   },
   typography: {
     fontFamily: 'Roboto, Arial, sans-serif',

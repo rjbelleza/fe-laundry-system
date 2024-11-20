@@ -49,7 +49,9 @@ const Header = () => {
                         gap: '20px',
                     }}
                 >
-                    {['Services', 'About Us', 'Contact'].map((text) => (
+                    {['Services', 'About Us', 'Contact'].map((text, index) => {
+                    const paths = ['/services', '/about', '/contact'];
+                    return (
                         <Button
                             key={text}
                             sx={{
@@ -59,11 +61,13 @@ const Header = () => {
                                 },
                             }}
                         >
-                            <Link to="*" style={{ textDecoration: 'none', color: '#C43383' }}>
+                            <Link to={paths[index]} style={{ textDecoration: 'none', color: '#C43383' }}>
                                 {text}
                             </Link>
                         </Button>
-                    ))}
+                    );
+                })}
+
                 </Box>
             </Container>
         </Box>
