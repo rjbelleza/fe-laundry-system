@@ -10,6 +10,8 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import SellIcon from '@mui/icons-material/Sell';
 import GroupsIcon from '@mui/icons-material/Groups';
 import RuleIcon from '@mui/icons-material/Rule';
+import { Link } from 'react-router-dom';
+import Tooltip from '@mui/material/Tooltip';
 
 const AboutUs = () => {
     return (
@@ -32,16 +34,16 @@ const AboutUs = () => {
                             padding: '2em',
                         }}>
 
-                            <HomeIcon 
-                                color="success" 
-                                sx={{
-                                    height: '2em',
-                                    width: '2em',
-                                    '&:hover': {
-                                    color: 'rgba(255, 235, 85, 0.7)',
-                                        },
-                                    cursor: 'pointer'
-                                }}/>
+                            <Tooltip title="Go to Home"> 
+                                <Link to="/"> 
+                                    <HomeIcon color="success" 
+                                              sx={{ height: '2em', 
+                                                    width: '2em', 
+                                                    '&:hover': { color: 'rgba(255, 235, 85, 0.7)', }, 
+                                                    cursor: 'pointer' 
+                                    }} /> 
+                                </Link> 
+                            </Tooltip>
 
                                     <Box sx={{
                                             display: 'flex',
