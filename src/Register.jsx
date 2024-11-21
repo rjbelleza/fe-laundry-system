@@ -13,6 +13,9 @@ function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [address, setAddress] = useState(''); 
+    const [mobile, setMobile] = useState(''); 
+    const [postalCode, setPostalCode] = useState('');
     const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
     const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to manage confirm password visibility
     const [open, setOpen] = useState(false); // State for Snackbar visibility
@@ -28,6 +31,17 @@ function Register() {
             return;
         }
 
+        // Validate mobile and postal code lengths 
+        if (mobile.length !== 9) { 
+            setError('Mobile number must be exactly 9 digits'); 
+            return; 
+        }
+
+        if (postalCode.length !== 4) {
+            setError('Invalid Postal Code.');
+            return; 
+        }
+
         setLoading(true); // Show loading indicator
 
         try {
@@ -35,7 +49,14 @@ function Register() {
                 name,
                 email,
                 password,
+                address,
+                mobile,
+                postal_code: postalCode,
             });
+
+            // Store the token in localStorage 
+            localStorage.setItem('auth_token', response.data.token);
+
             console.log('Registration successful', response.data);
             setLoading(false); // Hide loading indicator
             setOpen(true); // Show Snackbar on success
@@ -198,6 +219,30 @@ function Register() {
                                 },
                             }}
                         />
+                        <TextField 
+                            label="Address" 
+                            variant="outlined" 
+                            fullWidth 
+                            margin="normal" 
+                            value={address} 
+                            onChange={(e) => setAddress(e.target.value)} 
+                        /> 
+                        <TextField 
+                            label="Postal Code" 
+                            variant="outlined" 
+                            fullWidth 
+                            margin="normal" 
+                            value={postalCode} 
+                            onChange={(e) => setPostalCode(e.target.value)} 
+                        />
+                        <TextField 
+                            label="Mobile Number" 
+                            variant="outlined" 
+                            fullWidth 
+                            margin="normal" 
+                            value={mobile} 
+                            onChange={(e) => setMobile(e.target.value)} 
+                        /> 
                         <Box sx={{width: '100%', height: '20px', marginBottom: '5px',}}>
                             {error && <Typography color="error" sx={{fontSize: '13px',}}>{error}</Typography>}
                         </Box>

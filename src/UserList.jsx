@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Pagination } from '@mui/material';
-import api from './services/api'; // Import the centralized Axios instance
+import api from './services/api';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);  // State to manage current page
-    const [totalPages, setTotalPages] = useState(1);    // State to manage total pages
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await api.get(`/users?page=${currentPage}`); // Fetch paginated data
-                setUsers(response.data.data);  // 'data' contains the users for the current page
-                setTotalPages(response.data.last_page); // 'last_page' from Laravel pagination response
+                const response = await api.get(`/users?page=${currentPage}`);
+                console.log("API Response:", response.data); // Log the response data
+                setUsers(response.data.data);
+                setTotalPages(response.data.last_page);
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
         };
 
         fetchUsers();
-    }, [currentPage]);  // Refetch users when the page changes
+    }, [currentPage]);
 
     const handlePageChange = (event, value) => {
-        setCurrentPage(value); // Update current page state when pagination changes
+        setCurrentPage(value);
     };
 
     return (
@@ -34,6 +35,9 @@ const UserList = () => {
                             <TableCell>ID</TableCell>
                             <TableCell>Name</TableCell>
                             <TableCell>Email</TableCell>
+                            <TableCell>Address</TableCell>
+                            <TableCell>Postal Code</TableCell>
+                            <TableCell>Mobile</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -42,6 +46,9 @@ const UserList = () => {
                                 <TableCell>{user.id}</TableCell>
                                 <TableCell>{user.name}</TableCell>
                                 <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.address}</TableCell>
+                                <TableCell>{user.postal_code}</TableCell>
+                                <TableCell>{user.mobile}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
