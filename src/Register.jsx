@@ -40,8 +40,8 @@ function Register() {
             setLoading(false); // Hide loading indicator
             setOpen(true); // Show Snackbar on success
 
-            // Redirect to user list page 
-            navigate('/users');
+            // Delay navigation for 3 seconds 
+            setTimeout(() => { navigate('/users'); }, 2000);
         } catch (error) {
             console.error('There was an error registering!', error);
             setLoading(false); // Hide loading indicator
@@ -208,7 +208,7 @@ function Register() {
                     </form>
                     
                     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                        <Alert onClose={handleClose} severity="success"  variant="filled" sx={{ width: '100%', backgroundColor: '#31f756', }}>
                             Registration successful!
                         </Alert>
                     </Snackbar>

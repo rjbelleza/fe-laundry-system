@@ -1,36 +1,44 @@
 import React, { useState } from 'react';
-import { TextField, Button, Container, Typography, Link } from '@mui/material';
+import { TextField, Button, Container, Typography, Link, IconButton, InputAdornment, CircularProgress, Backdrop } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import theme from './Theme';
 import { useNavigate } from 'react-router-dom';
-import api from './services/api'; // Import the centralized Axios instance
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import theme from './Theme';
+import api from './services/api';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // State for password visibility
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false); // State for loading indicator
     const navigate = useNavigate();
+
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = (event) => event.preventDefault();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true); // Show loading indicator
+
         try {
-            const response = await api.post('/login', { // Use the Axios instance
-                email,
-                password,
-            });
+            const response = await api.post('/login', { email, password });
 
             if (response.data.token) {
                 localStorage.setItem('auth_token', response.data.token);
-                navigate('/users');  // Redirect after login
+                navigate('/users');
             }
         } catch (error) {
             setError('Invalid login credentials');
+        } finally {
+            setLoading(false); // Hide loading indicator
         }
     };
 
     return (
-        <ThemeProvider theme={theme}> 
+        <ThemeProvider theme={theme}>
             <CssBaseline />
             <Container
                 maxWidth
@@ -48,7 +56,7 @@ const Login = () => {
             >
                 <Container
                     sx={{
-                        boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.6)',
+                        boxShadow: '10px 10px 10px rgba(0, 0, 0, 6)',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -94,10 +102,22 @@ const Login = () => {
                             color="secondary"
                             label="Password"
                             fullWidth
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             margin="normal"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                             sx={{
                                 '& .MuiOutlinedInput-root': {
                                     '& fieldset': {
@@ -113,8 +133,8 @@ const Login = () => {
                                 marginBottom: '20px',
                             }}
                         />
-                        <Button variant="contained" color="primary" type="submit" size="large" fullWidth>
-                            Login
+                        <Button variant="contained" color="primary" type="submit" size="large" fullWidth disabled={loading}>
+                            {loading ? <CircularProgress size={24} /> : 'Login'}
                         </Button>
                         <Container maxWidth sx={{height: '20px'}}>
                             {error && (
@@ -129,6 +149,11 @@ const Login = () => {
                             </Link>
                         </Typography>
                     </form>
+
+                    {/* Backdrop for loading indicator */}
+                    <Backdrop open={loading} style={{ zIndex: 1301 }}>
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
                 </Container>
             </Container>
         </ThemeProvider>
