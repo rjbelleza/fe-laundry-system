@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, TextField, Container, Typography, Snackbar, Alert, IconButton, InputAdornment, CircularProgress, Backdrop, Box } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
@@ -14,7 +14,7 @@ function Register() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [address, setAddress] = useState(''); 
-    const [mobile, setMobile] = useState(''); 
+    const [mobile, setMobile] = useState('09'); 
     const [postalCode, setPostalCode] = useState('');
     const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
     const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to manage confirm password visibility
@@ -22,6 +22,23 @@ function Register() {
     const [error, setError] = useState(''); // State for error message
     const [loading, setLoading] = useState(false); // State for loading indicator
     const navigate = useNavigate();
+
+    useEffect(() => { 
+        const input = document.getElementById('mobile-number'); 
+        if (input) { 
+            input.selectionStart = input.selectionEnd = input.value.length; 
+        } 
+    }, []);
+
+    const handleChange = (e) => { 
+        const { id, value } = e.target; 
+        if (id === 'mobile-number') { 
+            if (!value.startsWith('09')) { 
+                setMobile('09'); 
+            } else { 
+                setMobile(value); } 
+            }  
+        };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,8 +49,8 @@ function Register() {
         }
 
         // Validate mobile and postal code lengths 
-        if (mobile.length !== 9) { 
-            setError('Mobile number must be exactly 9 digits'); 
+        if (mobile.length !== 11) { 
+            setError('Mobile number must be exactly 11 digits'); 
             return; 
         }
 
@@ -50,7 +67,7 @@ function Register() {
                 email,
                 password,
                 address,
-                mobile,
+                mobile: mobile.slice(2),
                 postal_code: postalCode,
             });
 
@@ -93,164 +110,237 @@ function Register() {
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
             }}>
-                <Container maxWidth="xs" sx={{
+                <Container sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                     boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.6)',
                     padding: '30px',
-                    height: '520px',
+                    height: '570px',
+                    width: '400px',
                     borderRadius: '10px',
-                    backgroundColor: '#ffffff',
+                    backgroundColor: '#f7f0df',
                     }}>
-                    <Typography variant="h4" component="h1" color="primary" gutterBottom sx={{fontFamily: 'fantasy',}}>
+                    <Typography variant="h5" component="h1" color="primary" gutterBottom 
+                        sx={{fontFamily: 'Poppins-Bold', width: '100%', marginLeft: '50px', marginBottom: '10px',}}>
                         Create Account
                     </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <TextField
-                            label="Full Name"
-                            variant="outlined"
-                            fullWidth
-                            margin="normal"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#EE66A6',
+                        <form 
+                            onSubmit={handleSubmit}
+                            style={{
+                                height: '100%',
+                                width: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                gap: '15px',
+                            }}>
+                            <TextField
+                                label="Full Name"
+                                variant="outlined"
+                                margin="normal"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                size="small"
+                                sx={{
+                                    width: '300px',
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#D91656',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
                                     },
-                                    '&:hover fieldset': {
-                                        borderColor: '#D91656',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#EE66A6',
-                                    },
-                                },
-                            }}
-                        />
-                        <TextField
-                            label="Email"
-                            variant="outlined"
-                            fullWidth
-                            margin="normal"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#EE66A6',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: '#D91656',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#EE66A6',
-                                    },
-                                },
-                            }}
-                        />
-                        <TextField
-                            label="Password"
-                            variant="outlined"
-                            fullWidth
-                            margin="normal"
-                            type={showPassword ? 'text' : 'password'}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            slotProps={{
-                                input: {
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                },
-                            }}
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#EE66A6',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: '#D91656',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#EE66A6',
-                                    },
-                                },
-                            }}
-                        />
-                        <TextField
-                            label="Confirm Password"
-                            variant="outlined"
-                            fullWidth
-                            margin="normal"
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            slotProps={{
-                                input: {
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                onClick={handleClickShowConfirmPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                            >
-                                                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                },
-                            }}
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#EE66A6',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: '#D91656',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#EE66A6',
-                                    },
-                                },
-                            }}
-                        />
-                        <TextField 
-                            label="Address" 
-                            variant="outlined" 
-                            fullWidth 
-                            margin="normal" 
-                            value={address} 
-                            onChange={(e) => setAddress(e.target.value)} 
-                        /> 
-                        <TextField 
-                            label="Postal Code" 
-                            variant="outlined" 
-                            fullWidth 
-                            margin="normal" 
-                            value={postalCode} 
-                            onChange={(e) => setPostalCode(e.target.value)} 
-                        />
-                        <TextField 
-                            label="Mobile Number" 
-                            variant="outlined" 
-                            fullWidth 
-                            margin="normal" 
-                            value={mobile} 
-                            onChange={(e) => setMobile(e.target.value)} 
-                        /> 
-                        <Box sx={{width: '100%', height: '20px', marginBottom: '5px',}}>
-                            {error && <Typography color="error" sx={{fontSize: '13px',}}>{error}</Typography>}
-                        </Box>
+                                }}
+                            />
 
-                        <Button type="submit" variant="contained" color="primary" fullWidth disabled={loading} size="large">
-                            {loading ? <CircularProgress size={24} /> : 'Sign Up'}
-                        </Button>
-                    </form>
+                            <TextField
+                                label="Email"
+                                variant="outlined"
+                                margin="normal"
+                                type="email"
+                                value={email}
+                                size="small"
+                                onChange={(e) => setEmail(e.target.value)}
+                                sx={{
+                                    marginTop: '-10px',
+                                    width: '300px',
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#D91656',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                    },
+                                }}
+                            />
+
+                            <TextField
+                                label="Password"
+                                variant="outlined"
+                                margin="normal"
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                size="small"
+                                slotProps={{
+                                    input: {
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                }}
+                                sx={{
+                                    marginTop: '-10px',
+                                    width: '300px',
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#D91656',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                    },
+                                }}
+                            />
+
+                            <TextField
+                                label="Confirm Password"
+                                variant="outlined"
+                                margin="normal"
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                size="small"
+                                slotProps={{
+                                    input: {
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    onClick={handleClickShowConfirmPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                }}
+                                sx={{
+                                    marginTop: '-10px',
+                                    width: '300px',
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#D91656',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                    },
+                                }}
+                            />
+
+                            <TextField 
+                                label="Address" 
+                                variant="outlined"
+                                value={address} 
+                                onChange={(e) => setAddress(e.target.value)}
+                                size="small"
+                                sx={{
+                                    width: '300px',
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#D91656',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                    },
+                                }}
+                            /> 
+
+                            <TextField 
+                                label="Postal Code" 
+                                variant="outlined"
+                                margin="normal" 
+                                value={postalCode} 
+                                onChange={(e) => setPostalCode(e.target.value)}
+                                size="small"
+                                sx={{
+                                    marginTop: '-10px',
+                                    width: '300px',
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#D91656',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#EE66A6',
+                                        },
+                                    },
+                                }}
+                            />
+
+                            <TextField 
+                                id="mobile-number" 
+                                label="Mobile Number" 
+                                variant="outlined" 
+                                margin="normal" 
+                                size="small" 
+                                value={mobile} 
+                                onChange={handleChange}
+                                sx={{ 
+                                    marginTop: '-10px', 
+                                    width: '300px', 
+                                    '& .MuiOutlinedInput-root': { 
+                                        '& fieldset': { 
+                                            borderColor: '#EE66A6', 
+                                        }, 
+                                        '&:hover fieldset': { 
+                                            borderColor: '#D91656', 
+                                        }, 
+                                        '&.Mui-focused fieldset': { 
+                                            borderColor: '#EE66A6', 
+                                        }, 
+                                    }, 
+                                }} /> 
+                            
+                            <Box sx={{width: '300px', height: '10px'}} maxWidth>
+                                {error && <Typography color="error" sx={{fontSize: '13px',}}>{error}</Typography>}
+                            </Box>
+
+                            <Button type="submit" variant="contained" color="primary" disabled={loading}
+                                sx={{width: '330px', height: '40px',}}>
+                                {loading ? <CircularProgress size={24} /> : 'Sign Up'}
+                            </Button>
+                        </form>
                     
                     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                         <Alert onClose={handleClose} severity="success"  variant="filled" sx={{ width: '100%', backgroundColor: '#31f756', }}>
