@@ -7,6 +7,7 @@ import ForgotPassword from './ForgotPassword';
 import Home from './Home';
 import AboutUs from './AboutUs';
 import Register from './Register';
+import Contact from './Contact';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/users" element={<PrivateRoute><UserList /></PrivateRoute>} />
                 <Route path="/forgot-password" element={<ForgotPassword/>} />
+                <Route path="/contact" element={<Contact/>} />
             </Routes>
         </Router>
     );
