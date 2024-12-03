@@ -8,6 +8,7 @@ import Home from './Home';
 import AboutUs from './AboutUs';
 import Register from './Register';
 import Contact from './Contact';
+import CustomDash from './CustomerDashboard';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/users" element={<PrivateRoute><UserList /></PrivateRoute>} />
+                <Route path="dashboard" element={<CustomDash />} />
                 <Route path="/forgot-password" element={<ForgotPassword/>} />
                 <Route path="/contact" element={<Contact/>} />
             </Routes>
