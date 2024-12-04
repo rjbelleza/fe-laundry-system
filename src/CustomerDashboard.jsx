@@ -17,7 +17,7 @@ const OrderForm = () => {
     const [snackbarSeverity, setSnackbarSeverity] = useState('error');
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api')
+        axios.get('http://localhost:8000/api/services')
             .then(response => {
                 // Ensure price is parsed as a number
                 const servicesData = response.data.map(service => ({
@@ -72,7 +72,7 @@ const OrderForm = () => {
             return;
         }
 
-        axios.post('http://localhost:8000/api', {
+        axios.post('http://localhost:8000/api/orders', {
             service_id: serviceId,
             baskets,
             address,
