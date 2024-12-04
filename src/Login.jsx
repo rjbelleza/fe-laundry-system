@@ -28,7 +28,17 @@ const Login = () => {
 
             if (response.data.token) {
                 localStorage.setItem('auth_token', response.data.token);
-                navigate('/users');
+
+                // Check the user's role and navigate accordingly 
+                const userRole = response.data.role;
+
+                if (userRole === 'admin') { 
+                    navigate('/users'); 
+                } else if (userRole === 'customer') { 
+                    navigate('/dashboard'); 
+                } else { 
+                    navigate('/'); 
+                }
             }
         } catch (error) {
             setError('Invalid login credentials');

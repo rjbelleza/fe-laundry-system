@@ -35,6 +35,7 @@ const UserList = () => {
                             <TableCell>ID</TableCell>
                             <TableCell>Name</TableCell>
                             <TableCell>Email</TableCell>
+                            <TableCell>Role</TableCell>
                             <TableCell>Address</TableCell>
                             <TableCell>Postal Code</TableCell>
                             <TableCell>Mobile</TableCell>
@@ -46,6 +47,7 @@ const UserList = () => {
                                 <TableCell>{user.id}</TableCell>
                                 <TableCell>{user.name}</TableCell>
                                 <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.role}</TableCell>
                                 <TableCell>{user.address}</TableCell>
                                 <TableCell>{user.postal_code}</TableCell>
                                 <TableCell>{user.mobile}</TableCell>
