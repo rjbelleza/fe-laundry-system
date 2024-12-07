@@ -79,7 +79,7 @@ function Register() {
             setOpen(true); // Show Snackbar on success
 
             // Delay navigation for 3 seconds 
-            setTimeout(() => { navigate('/users'); }, 2000);
+            setTimeout(() => { navigate('/dashboard'); }, 2000);
         } catch (error) {
             console.error('There was an error registering!', error);
             setLoading(false); // Hide loading indicator
