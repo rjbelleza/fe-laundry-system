@@ -72,6 +72,9 @@ const OrderForm = () => {
             return;
         }
 
+        const token = localStorage.getItem('auth_token'); // Get the token from local storage
+        console.log('Auth Token:', token); // Log token for debugging
+
         axios.post('http://localhost:8000/api/orders', {
             service_id: serviceId,
             baskets,
@@ -79,6 +82,10 @@ const OrderForm = () => {
             postal_code: postalCode, // Include postal code
             notes, // Include notes
             payment_mode: paymentMode,
+        }, { 
+            headers: { 
+                'Authorization': `Bearer ${token}` // Include the token in the headers 
+            }
         })
         .then(response => {
             console.log('Order created successfully', response.data);
