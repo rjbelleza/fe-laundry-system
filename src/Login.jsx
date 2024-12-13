@@ -33,7 +33,7 @@ const Login = () => {
                 const userRole = response.data.role;
 
                 if (userRole === 'admin') { 
-                    navigate('/users'); 
+                    navigate('/admin'); 
                 } else if (userRole === 'customer') { 
                     navigate('/dashboard'); 
                 } else { 
