@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Pagination, Modal, Button, Typography, Box, IconButton } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Pagination, Modal, Button, Typography, Box, IconButton, Dialog,
+         DialogActions, DialogContent, DialogContentText, DialogTitle, Alert, AlertTitle } from '@mui/material';
 import api from './services/api';
 import UpdateUserRole from './UpdateUserRole';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import { Delete as DeleteIcon, Close as CloseIcon } from '@mui/icons-material';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -10,6 +11,9 @@ const UserList = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [open, setOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [userIdToDelete, setUserIdToDelete] = useState(null);
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -54,15 +58,33 @@ const UserList = () => {
         setCurrentPage(value);
     };
 
-    const handleDelete = (userId) => { 
-        api.delete(`/users/${userId}`) 
+    const handleDeleteDialogOpen = (userId) => { 
+        setUserIdToDelete(userId); 
+        setDeleteDialogOpen(true); 
+    };
+
+    const handleDeleteDialogClose = () => { 
+        setUserIdToDelete(null); 
+        setDeleteDialogOpen(false); 
+    };
+
+    const handleDelete = () => { 
+        api.delete(`/users/${userIdToDelete}`) 
             .then(response => { 
                 console.log(response.data.message); 
-                setUsers(users.filter(user => user.id !== userId)); 
+                setUsers(users.filter(user => user.id !== userIdToDelete)); 
+                setSuccessMessage('User deleted successfully!');
+                handleDeleteDialogClose();
             }) 
             .catch(error => { 
                 console.error('There was an error deleting the user!', error); 
+                setSuccessMessage('Failed to delete user. Please try again.');
+                handleDeleteDialogClose();
             }); 
+    };
+
+    const handleCloseAlert = () => { 
+        setSuccessMessage(''); 
     };
 
     return (
@@ -80,6 +102,23 @@ const UserList = () => {
                         height: '500px',
                         overflow: 'auto',
                     }}>
+                {successMessage && ( 
+                    <Alert severity="success" sx={{ marginBottom: 2 }} 
+                        action={ 
+                            <IconButton 
+                                aria-label="close" 
+                                color="inherit" 
+                                size="small" 
+                                onClick={handleCloseAlert} 
+                            > 
+                                <CloseIcon fontSize="inherit" /> 
+                            </IconButton> 
+                        } 
+                    > 
+                            <AlertTitle>Success</AlertTitle> 
+                            {successMessage} 
+                    </Alert>
+                )}
                 <Table>
                     <TableHead sx={{
                                     position: 'sticky',
@@ -96,7 +135,7 @@ const UserList = () => {
                             <TableCell sx={{ color: '#ffffff' }}>Address</TableCell>
                             <TableCell sx={{ color: '#ffffff' }}>Postal</TableCell>
                             <TableCell sx={{ color: '#ffffff' }}>Mobile</TableCell>
-                            <TableCell></TableCell>
+                            <TableCell sx={{ color: '#ffffff', textAlign: 'center'}}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -110,10 +149,12 @@ const UserList = () => {
                                 <TableCell>{user.postal_code}</TableCell>
                                 <TableCell>{user.mobile}</TableCell>
                                 <TableCell>
-                                    <Button onClick={() => handleOpen(user)} variant="contained" sx={{ marginRight: 2, zIndex: '1', backgroundColor: '#4d2836'}}>
-                                        Edit
-                                    </Button>
-                                    <IconButton onClick={() => handleDelete(user.id)} color="error"> <DeleteIcon /> </IconButton>
+                                    <Box fullWidth sx={{display: 'flex'}}>
+                                        <Button onClick={() => handleOpen(user)} variant="contained" sx={{ marginRight: 2, zIndex: '1', backgroundColor: '#4d2836'}}>
+                                            Edit
+                                        </Button>
+                                        <IconButton onClick={() => handleDeleteDialogOpen(user.id)} color="error"> <DeleteIcon /> </IconButton>
+                                    </Box>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -172,6 +213,23 @@ const UserList = () => {
                     )}
                 </Paper>
             </Modal>
+            <Dialog 
+                open={deleteDialogOpen} 
+                onClose={handleDeleteDialogClose} 
+                aria-labelledby="alert-dialog-title" 
+                aria-describedby="alert-dialog-description" 
+            > 
+                <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle> 
+                <DialogContent> 
+                    <DialogContentText id="alert-dialog-description"> 
+                        Are you sure you want to delete this user? This action cannot be undone. 
+                    </DialogContentText> 
+                </DialogContent> 
+                <DialogActions> 
+                    <Button onClick={handleDeleteDialogClose} color="primary"> Cancel </Button> 
+                    <Button onClick={handleDelete} color="error" autoFocus> Delete </Button> 
+                </DialogActions> 
+            </Dialog>
         </Container>
     );
 };
