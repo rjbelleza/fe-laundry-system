@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, FormControl, InputLabel, Select, MenuItem, Typography, Box } from '@mui/material';
+import { Button, FormControl, Select, MenuItem, Typography, Box } from '@mui/material';
 
 const UpdateUserRole = ({ user, onUpdate }) => {
     const [role, setRole] = useState(user.role);
@@ -12,8 +12,8 @@ const UpdateUserRole = ({ user, onUpdate }) => {
 
     return (
         <form onSubmit={handleSubmit}>
+            <Typography sx={{fontSize: '12px', marginLeft: '10px'}}>Role</Typography>
             <FormControl fullWidth>
-                <InputLabel id="role-label">Role</InputLabel>
                 <Select
                     labelId="role-label"
                     value={role}
@@ -24,7 +24,9 @@ const UpdateUserRole = ({ user, onUpdate }) => {
                 </Select>
             </FormControl>
             <Box sx={{width: '100%', display: 'flex', alignItems: 'center'}}>
-            <Button type="submit" variant="contained" sx={{ marginTop: 2, backgroundColor: '#4d1c2f' }}>Update Role</Button>
+            <Button type="submit" variant="contained" sx={{ marginTop: 2, backgroundColor: '#4d1c2f' }}
+                    disabled={role === user.role}
+                >Update Role</Button>
                 {successMessage && (
                     <Typography variant="body2" color="success.main" sx={{ mt: 2, marginLeft: '50px',}}>
                         {successMessage}

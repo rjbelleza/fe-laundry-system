@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Pagination, Modal, Button, Typography, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Pagination, Modal, Button, Typography, Box, IconButton } from '@mui/material';
 import api from './services/api';
 import UpdateUserRole from './UpdateUserRole';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -53,6 +54,17 @@ const UserList = () => {
         setCurrentPage(value);
     };
 
+    const handleDelete = (userId) => { 
+        api.delete(`/users/${userId}`) 
+            .then(response => { 
+                console.log(response.data.message); 
+                setUsers(users.filter(user => user.id !== userId)); 
+            }) 
+            .catch(error => { 
+                console.error('There was an error deleting the user!', error); 
+            }); 
+    };
+
     return (
         <Container maxWidth="lg"
                    sx={{
@@ -101,6 +113,7 @@ const UserList = () => {
                                     <Button onClick={() => handleOpen(user)} variant="contained" sx={{ marginRight: 2, zIndex: '1', backgroundColor: '#4d2836'}}>
                                         Edit
                                     </Button>
+                                    <IconButton onClick={() => handleDelete(user.id)} color="error"> <DeleteIcon /> </IconButton>
                                 </TableCell>
                             </TableRow>
                         ))}
