@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Pagination, Modal, Button, Typography, Box, IconButton, Dialog,
-         DialogActions, DialogContent, DialogContentText, DialogTitle, Alert, AlertTitle } from '@mui/material';
+         DialogActions, DialogContent, DialogContentText, DialogTitle, Alert, AlertTitle, TextField } from '@mui/material';
 import api from './services/api';
 import UpdateUserRole from './UpdateUserRole';
 import { Delete as DeleteIcon, Close as CloseIcon } from '@mui/icons-material';
@@ -14,6 +14,7 @@ const UserList = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [userIdToDelete, setUserIdToDelete] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -87,6 +88,14 @@ const UserList = () => {
         setSuccessMessage(''); 
     };
 
+    const handleSearchChange = (event) => { 
+        setSearchQuery(event.target.value); 
+    };
+
+    const filteredUsers = users.filter(user => 
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) 
+    );
+
     return (
         <Container maxWidth="lg"
                    sx={{
@@ -96,6 +105,15 @@ const UserList = () => {
                         flexDirection: 'column',
                         height: '100vh',
                     }}>
+                        <TextField 
+                        label="Search Users" 
+                        variant="outlined" 
+                        value={searchQuery} 
+                        onChange={handleSearchChange} 
+                        fullWidth
+                        size='small'
+                        sx={{  mb: 1, width: '200px', right: '-40%' }} 
+                    />
             <Paper sx={{
                         border: '2px solid black',
                         borderRadius: '10px',
@@ -139,7 +157,7 @@ const UserList = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users.map((user) => (
+                        {filteredUsers.map((user) => (
                             <TableRow key={user.id}>
                                 <TableCell>{user.id}</TableCell>
                                 <TableCell>{user.name}</TableCell>
