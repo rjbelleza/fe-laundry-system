@@ -1,35 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Pagination, Modal, Button, Typography, Box, IconButton, Dialog,
-         DialogActions, DialogContent, DialogContentText, DialogTitle, Alert, AlertTitle, TextField } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, Modal, Button, Typography, Box, IconButton, Dialog,
+         DialogActions, DialogContent, DialogContentText, DialogTitle, Alert, AlertTitle, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import api from './services/api';
 import UpdateUserRole from './UpdateUserRole';
 import { Delete as DeleteIcon, Close as CloseIcon } from '@mui/icons-material';
+import SortIcon from '@mui/icons-material/Sort';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
     const [open, setOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [userIdToDelete, setUserIdToDelete] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
+    const [filterRole, setFilterRole] = useState('');
+    const [sortDescending, setSortDescending] = useState(true); 
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await api.get(`/users?page=${currentPage}`);
+                const response = await api.get(`/users`);
                 console.log("API Response:", response.data); // Log the response data
-                setUsers(response.data.data);
-                setTotalPages(response.data.last_page);
+                setUsers(response.data);
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
         };
 
         fetchUsers();
-    }, [currentPage]);
+    }, []);
 
     const handleUpdate = (updatedUser, setSuccessMessage) => {
         console.log(`Updating user with ID: ${updatedUser.id}, New Role: ${updatedUser.role}`);
@@ -55,8 +55,8 @@ const UserList = () => {
         setSelectedUser(null);
     };
 
-    const handlePageChange = (event, value) => {
-        setCurrentPage(value);
+    const handleRoleChange = (event) => { 
+        setFilterRole(event.target.value); 
     };
 
     const handleDeleteDialogOpen = (userId) => { 
@@ -92,8 +92,14 @@ const UserList = () => {
         setSearchQuery(event.target.value); 
     };
 
-    const filteredUsers = users.filter(user => 
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()) 
+    const toggleSortOrder = () => { 
+        setSortDescending(!sortDescending); 
+    };
+
+    const filteredUsers = users 
+        .filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase())) 
+        .filter(user => filterRole ? user.role === filterRole : true) 
+        .sort((a, b) => sortDescending ? new Date(b.created_at) - new Date(a.created_at) : new Date(a.created_at) - new Date(b.created_at)
     );
 
     return (
@@ -105,20 +111,46 @@ const UserList = () => {
                         flexDirection: 'column',
                         height: '100vh',
                     }}>
-                        <TextField 
+            <Box sx={{ width: '100%', mb: 1, display: 'flex', justifyContent: 'flex-end' }}> 
+                    <TextField 
                         label="Search Users" 
                         variant="outlined" 
                         value={searchQuery} 
-                        onChange={handleSearchChange} 
-                        fullWidth
+                        onChange={handleSearchChange}
                         size='small'
-                        sx={{  mb: 1, width: '200px', right: '-40%' }} 
+                        sx={{ width: '150px',}} 
                     />
+                    <FormControl 
+                        sx={{ width: '150px', marginLeft: '10px' }} size='small'> 
+                        <InputLabel 
+                            id="role-filter-label">Filter by Role</InputLabel> 
+                            <Select 
+                                labelId="role-filter-label" 
+                                value={filterRole} 
+                                onChange={handleRoleChange} 
+                                label="Filter by Role" 
+                            > 
+                                <MenuItem 
+                                    value=""><em>All</em></MenuItem> 
+                                    <MenuItem value="admin">Admin</MenuItem> 
+                                    <MenuItem value="customer">Customer</MenuItem> 
+                            </Select> 
+                    </FormControl> 
+                    <Button 
+                        variant="contained" 
+                        onClick={toggleSortOrder} 
+                        startIcon={<SortIcon />}
+                        sx={{marginLeft: '10px', backgroundColor: '#45264a',}}
+                    > 
+                        {sortDescending ? 'Sort by Oldest' : 'Sort by Newest'} 
+                    </Button>
+            </Box>
             <Paper sx={{
                         border: '2px solid black',
                         borderRadius: '10px',
                         height: '500px',
                         overflow: 'auto',
+                        marginBottom: '30px',
                     }}>
                 {successMessage && ( 
                     <Alert severity="success" sx={{ marginBottom: 2 }} 
@@ -179,13 +211,6 @@ const UserList = () => {
                     </TableBody>
                 </Table>
             </Paper>
-            <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                color="primary"
-                style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}
-            />
 
             <Modal open={open}
                    onClose={handleClose}
@@ -204,27 +229,30 @@ const UserList = () => {
                 }}>
                     {selectedUser && (
                         <>
-                            <Typography variant='h5'
-                                sx={{ marginBottom: '30px' }}>Manage User</Typography>
+                            <Typography variant='h6'
+                                sx={{ marginBottom: '20px' }}>Manage User</Typography>
                             <Box sx={{ marginBottom: '30px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '7px', borderRadius: '10px' }}>
-                                    <Typography sx={{ fontSize: '12px' }}>Name:</Typography>{selectedUser.name}
+                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
+                                    <Typography sx={{ fontSize: '10px' }}>Name:</Typography>{selectedUser.name}
                                 </Typography>
-                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '7px', borderRadius: '10px' }}>
-                                    <Typography sx={{ fontSize: '12px' }}>Email:</Typography>{selectedUser.email}
+                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
+                                    <Typography sx={{ fontSize: '10px' }}>Email:</Typography>{selectedUser.email}
                                 </Typography>
-                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '7px', borderRadius: '10px' }}>
-                                    <Typography sx={{ fontSize: '12px' }}>Address:</Typography>{selectedUser.address}
+                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
+                                    <Typography sx={{ fontSize: '10px' }}>Address:</Typography>{selectedUser.address}
                                 </Typography>
-                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '7px', borderRadius: '10px' }}>
-                                    <Typography sx={{ fontSize: '12px' }}>Postal Code:</Typography>{selectedUser.postal_code}
+                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
+                                    <Typography sx={{ fontSize: '10px' }}>Postal Code:</Typography>{selectedUser.postal_code}
                                 </Typography>
-                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '7px', borderRadius: '10px' }}>
-                                    <Typography sx={{ fontSize: '12px' }}>Mobile No.:</Typography>0{selectedUser.mobile}
+                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
+                                    <Typography sx={{ fontSize: '10px' }}>Mobile No.:</Typography>0{selectedUser.mobile}
+                                </Typography>
+                                <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
+                                    <Typography sx={{ fontSize: '10px' }}>Created at:</Typography>{new Date(selectedUser.created_at).toLocaleString()}
                                 </Typography>
                             </Box>
                             <UpdateUserRole user={selectedUser} onUpdate={handleUpdate} />
-                            <Button onClick={handleClose} variant="contained" color='secondary' sx={{ marginTop: 2 }}>
+                            <Button onClick={handleClose} variant="contained" color='secondary' sx={{ marginTop: 1 }}>
                                 Close
                             </Button>
                         </>
