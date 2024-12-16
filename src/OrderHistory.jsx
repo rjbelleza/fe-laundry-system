@@ -15,8 +15,10 @@ import {
     DialogContent, 
     DialogActions,
     Snackbar,
-    Alert
+    Alert,
+    IconButton
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const OrderHistory = () => {
     const [orders, setOrders] = useState([]);
@@ -68,15 +70,32 @@ const OrderHistory = () => {
             });
     };
 
+    const handleDeleteOrder = (orderId) => { 
+        api.delete(`/orders/${orderId}`) 
+            .then(response => { 
+                setSnackbarMessage('Order deleted successfully'); 
+                setSnackbarSeverity('success'); 
+                setSnackbarOpen(true); // Remove the order from state 
+                setOrders(orders.filter(order => order.id !== orderId)); 
+                handleClose(); 
+            }) 
+            .catch(error => { 
+                setSnackbarMessage('Failed to delete the order'); 
+                setSnackbarSeverity('error'); 
+                setSnackbarOpen(true); 
+                console.error("There was an error deleting the order!", error); 
+            }); 
+    };
+
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
     };
 
     return (
         <Box sx={{ marginRight: '70px', width: '500px' }}>
-            <Typography variant="h4" component="h2" gutterBottom
+            <Typography variant="h6" component="h2" gutterBottom
                 sx={{ marginLeft: '10px' }}>
-                Manage Orders
+                Order History
             </Typography>
             <Paper 
                 sx={{ 
@@ -121,7 +140,8 @@ const OrderHistory = () => {
 
             {selectedOrder && (
                 <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Order Details</DialogTitle>
+                    <DialogTitle>Order Details
+                    </DialogTitle>
                     <DialogContent>
                         {selectedOrder ? (
                             <>
@@ -139,17 +159,33 @@ const OrderHistory = () => {
                             <Typography variant="body1">Loading order details...</Typography>
                         )}
                     </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                            Close
-                        </Button>
-                        <Button 
-                            onClick={() => handleCancelOrder(selectedOrder.id)} 
-                            color="secondary"
-                            disabled={selectedOrder.status !== 'pending'}
+                    <DialogActions sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Button 
+                                onClick={() => handleCancelOrder(selectedOrder.id)} 
+                                color="secondary"
+                                disabled={selectedOrder.status !== 'pending'}
+                                variant='contained'
+                                size='small'
+                            >
+                                Cancel Order
+                            </Button>
+                            <Button 
+                            aria-label="delete" 
+                            color="error"
                             variant='contained'
-                        >
-                            Cancel Order
+                            size='small'
+                            onClick={() => handleDeleteOrder(selectedOrder.id)} 
+                            disabled={selectedOrder.status !== 'cancelled'} 
+                            sx={{ ml: 2 }} > 
+                            <DeleteIcon /> 
+                            Delete History
+                        </Button>
+                        </Box>
+                        <Button onClick={handleClose} color="primary"
+                            sx={{ marginBottom: '5px', marginTop: '20px' }}
+                            >
+                                Close
                         </Button>
                     </DialogActions>
                 </Dialog>

@@ -101,6 +101,10 @@ const OrderForm = () => {
             setSnackbarMessage('Order created successfully.');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
+
+            setTimeout(() => { 
+                window.location.reload(); 
+            }, 1000);
         })
         .catch(error => {
             console.error('Error creating order:', error);
