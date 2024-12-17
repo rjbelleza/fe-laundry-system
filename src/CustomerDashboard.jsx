@@ -123,7 +123,7 @@ const OrderForm = () => {
 
     return (
         <Container maxWidth="sm"
-            sx={{ border: 'solid 1px black', padding: '10px', borderRadius: '10px' }}>
+            sx={{ border: 'solid 1px black', padding: '10px', borderRadius: '10px', backgroundColor: '#fff', }}>
             <Typography variant="h6" component="h1" gutterBottom>
                 Place Your Order
             </Typography>
@@ -233,6 +233,7 @@ const CustomerDashboard = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: '100vh',
+                backgroundColor: '#ffea9e',
             }}>
             <OrderForm />
             <OrderHistory/>

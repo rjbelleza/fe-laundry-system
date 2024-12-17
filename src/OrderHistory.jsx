@@ -1,23 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from './services/api';
 import { 
-    Typography, 
-    TableRow, 
-    TableCell, 
-    TableBody, 
-    TableHead, 
-    Table, 
-    Paper, 
-    Box, 
-    Button, 
-    Dialog, 
-    DialogTitle, 
-    DialogContent, 
-    DialogActions,
-    Snackbar,
-    Alert,
-    IconButton
-} from '@mui/material';
+    Typography, TableRow, TableCell, TableBody, TableHead, Table, Paper,  Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
+    Snackbar, Alert } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const OrderHistory = () => {
@@ -92,7 +77,7 @@ const OrderHistory = () => {
     };
 
     return (
-        <Box sx={{ marginRight: '70px', width: '500px' }}>
+        <Box sx={{ marginRight: '70px', width: '530px' }}>
             <Typography variant="h6" component="h2" gutterBottom
                 sx={{ marginLeft: '10px' }}>
                 Order History
@@ -101,6 +86,7 @@ const OrderHistory = () => {
                 sx={{ 
                     width: '100%', 
                     maxWidth: '600px', 
+                    height: '380px',
                     margin: 'auto', 
                     border: '1px solid black', 
                     borderRadius: '10px',
@@ -108,7 +94,13 @@ const OrderHistory = () => {
                 }}
             >
                 <Table>
-                    <TableHead sx={{ backgroundColor: '#643d6e', color: '#fff' }}>
+                    <TableHead 
+                        sx={{ backgroundColor: '#643d6e', 
+                              width: '100%',
+                              position: 'sticky',
+                              top: '0px',
+                              zIndex: '10',
+                            }}>
                         <TableRow sx={{ textAlign: 'center' }}>
                             <TableCell>Service</TableCell>
                             <TableCell>Status</TableCell>
