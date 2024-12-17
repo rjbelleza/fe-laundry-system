@@ -20,7 +20,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/admin" element={<PrivateRoute><UserList /></PrivateRoute>} />
-                <Route path="/dashboard" element={<CustomerDashboard />} />
+                <Route path="/dashboard" element={<PrivateRoute><CustomerDashboard /></PrivateRoute>} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/contact" element={<Contact />} />
             </Routes>

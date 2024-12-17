@@ -5,6 +5,7 @@ import api from './services/api';
 import UpdateUserRole from './UpdateUserRole';
 import { Delete as DeleteIcon, Close as CloseIcon } from '@mui/icons-material';
 import SortIcon from '@mui/icons-material/Sort';
+import Navbar from './NavBar';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -111,6 +112,7 @@ const UserList = () => {
                         flexDirection: 'column',
                         height: '100vh',
                     }}>
+                        <Navbar/>
             <Box sx={{ width: '100%', mb: 1, display: 'flex', justifyContent: 'flex-end' }}> 
                     <TextField 
                         label="Search Users" 

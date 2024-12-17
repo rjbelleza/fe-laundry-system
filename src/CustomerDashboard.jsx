@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, TextField, MenuItem, Button, Typography, Box, Snackbar, Alert } from '@mui/material';
 import OrderHistory from './OrderHistory';
+import Navbar from './NavBar';
 
 const OrderForm = () => {
     const [services, setServices] = useState([]);
@@ -237,6 +238,7 @@ const CustomerDashboard = () => {
             }}>
             <OrderForm />
             <OrderHistory/>
+            <Navbar/>
         </Box>
     );
 }

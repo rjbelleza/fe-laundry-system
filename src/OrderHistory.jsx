@@ -77,7 +77,7 @@ const OrderHistory = () => {
     };
 
     return (
-        <Box sx={{ marginRight: '70px', width: '530px' }}>
+        <Box sx={{ marginRight: '50px', width: '600px' }}>
             <Typography variant="h6" component="h2" gutterBottom
                 sx={{ marginLeft: '10px' }}>
                 Order History
@@ -174,7 +174,7 @@ const OrderHistory = () => {
                             Delete History
                         </Button>
                         </Box>
-                        <Button onClick={handleClose} color="primary"
+                        <Button onClick={handleClose} color="primary" variant='contained' fullWidth
                             sx={{ marginBottom: '5px', marginTop: '20px' }}
                             >
                                 Close
