@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, TextField, MenuItem, Button, Typography, Box, Snackbar, Alert } from '@mui/material';
+import OrderHistory from './OrderHistory';
 
 const OrderForm = () => {
     const [services, setServices] = useState([]);
@@ -100,6 +101,10 @@ const OrderForm = () => {
             setSnackbarMessage('Order created successfully.');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
+
+            setTimeout(() => { 
+                window.location.reload(); 
+            }, 1000);
         })
         .catch(error => {
             console.error('Error creating order:', error);
@@ -119,10 +124,11 @@ const OrderForm = () => {
     return (
         <Container maxWidth="sm"
             sx={{ border: 'solid 1px black', padding: '10px', borderRadius: '10px' }}>
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography variant="h6" component="h1" gutterBottom>
                 Place Your Order
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <Box component="form" onSubmit={handleSubmit} noValidate 
+                sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <TextField
                     select
                     id="service"
@@ -132,7 +138,6 @@ const OrderForm = () => {
                     value={serviceId}
                     onChange={handleServiceChange}
                     size="small"
-                    sx={{ '& .MuiInputBase-root': { height: 48 } }} // Customize height here
                 >
                     {services.map((service) => (
                         <MenuItem key={service.id} value={service.id}>
@@ -145,55 +150,45 @@ const OrderForm = () => {
                     label="Number of Baskets"
                     type="number"
                     fullWidth
-                    margin="normal"
                     value={baskets}
                     onChange={handleBasketChange}
                     slotProps={{ min: 0 }}
                     size="small"
-                    sx={{ '& .MuiInputBase-root': { height: 48 } }} // Customize height here
                 />
                 <TextField
                     id="address"
                     label="Address"
                     fullWidth
-                    margin="normal"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     size="small"
-                    sx={{ '& .MuiInputBase-root': { height: 48 } }} // Customize height here
                 />
                 <TextField
                     id="postalCode"
                     label="Postal Code"
                     fullWidth
-                    margin="normal"
                     value={postalCode}
                     onChange={handlePostalCodeChange}
                     size="small"
-                    sx={{ '& .MuiInputBase-root': { height: 48 } }} // Customize height here
                 />
                 <TextField
                     id="notes"
                     label="Notes"
                     fullWidth
-                    margin="normal"
                     multiline
-                    rows={4} // Set the height for multiline input
+                    rows={3} // Set the height for multiline input
                     value={notes}
                     onChange={handleNotesChange}
                     size="small"
-                    sx={{ '& .MuiInputBase-root': { height: 'auto' } }} // Adjust height for multiline
                 />
                 <TextField
                     select
                     id="paymentMode"
                     label="Select Payment Mode"
                     fullWidth
-                    margin="normal"
                     value={paymentMode}
                     onChange={(e) => setPaymentMode(e.target.value)}
                     size="small"
-                    sx={{ '& .MuiInputBase-root': { height: 48 } }} // Customize height here
                 >
                     <MenuItem value="cash">Cash on Delivery</MenuItem>
                     <MenuItem value="credit_card">Credit Card</MenuItem>
@@ -210,7 +205,7 @@ const OrderForm = () => {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{ mt: 3, mb: 2, backgroundColor: '#38223d' }}
                 >
                     Place Order
                 </Button>
@@ -240,6 +235,7 @@ const CustomerDashboard = () => {
                 height: '100vh',
             }}>
             <OrderForm />
+            <OrderHistory/>
         </Box>
     );
 }
