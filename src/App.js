@@ -10,6 +10,7 @@ import Register from './Register';
 import Contact from './Contact';
 import CustomerDashboard from './CustomerDashboard';
 import ResetPassword from './ResetPassword';
+import ServicesManager from './ServicesManager';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/services-manager" element={<PrivateRoute><ServicesManager /></PrivateRoute>}></Route>
             </Routes>
         </Router>
     );
