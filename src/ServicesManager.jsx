@@ -10,6 +10,8 @@ const ServicesManager = () => {
     const [open, setOpen] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [createDialogOpen, setCreateDialogOpen] = useState(false);
+    const [newService, setNewService] = useState({ name: '', description: '', price: '' });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -63,6 +65,37 @@ const ServicesManager = () => {
         }
     };
 
+    const handleCreateDialogOpen = () => {
+        setCreateDialogOpen(true);
+    };
+
+    const handleCreateDialogClose = () => {
+        setCreateDialogOpen(false);
+        setNewService({ name: '', description: '', price: '' });
+    };
+
+    const handleNewServiceChange = (e) => {
+        const { name, value } = e.target;
+        setNewService(prevService => ({
+            ...prevService,
+            [name]: value,
+        }));
+    };
+
+    const handleCreateService = async () => {
+        try {
+            const response = await api.post('/services', newService);
+            setServices([...services, response.data]);
+            setSnackbarMessage('Service created successfully!');
+            setSnackbarOpen(true);
+            handleCreateDialogClose();
+        } catch (error) {
+            console.error("Error creating service:", error);
+            setSnackbarMessage('Error creating service.');
+            setSnackbarOpen(true);
+        }
+    };
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <Button 
@@ -70,6 +103,12 @@ const ServicesManager = () => {
                 onClick={() => navigate('/admin')}
                 sx={{ left: '-25%', marginBottom: '10px' }}
             >Users
+            </Button>
+            <Button 
+                variant='contained'
+                onClick={handleCreateDialogOpen}
+                sx={{ left: '-25%', marginBottom: '10px' }}
+            >Create Service
             </Button>
             <Paper elevation={10} sx={{ padding: '10px', width: '800px', height: '400px', marginBottom: '-50px', overflow: 'auto' }} >
                 <Table>
@@ -140,6 +179,46 @@ const ServicesManager = () => {
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">Cancel</Button>
                     <Button onClick={handleUpdate} color="primary">Save</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={createDialogOpen} onClose={handleCreateDialogClose}>
+                <DialogTitle>Create New Service</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        margin="dense"
+                        label="Service Name"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        name="name"
+                        value={newService.name}
+                        onChange={handleNewServiceChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Description"
+                        type="text"
+                        fullWidth
+                        variant="outlined"
+                        name="description"
+                        value={newService.description}
+                        onChange={handleNewServiceChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Price"
+                        type="number"
+                        fullWidth
+                        variant="outlined"
+                        name="price"
+                        value={newService.price}
+                        onChange={handleNewServiceChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCreateDialogClose} color="primary">Cancel</Button>
+                    <Button onClick={handleCreateService} color="primary">Save</Button>
                 </DialogActions>
             </Dialog>
 
