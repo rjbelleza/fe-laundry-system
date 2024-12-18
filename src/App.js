@@ -9,6 +9,7 @@ import AboutUs from './AboutUs';
 import Register from './Register';
 import Contact from './Contact';
 import CustomerDashboard from './CustomerDashboard';
+import ResetPassword from './ResetPassword';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/admin" element={<PrivateRoute><UserList /></PrivateRoute>} />
                 <Route path="/dashboard" element={<PrivateRoute><CustomerDashboard /></PrivateRoute>} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
                 <Route path="/contact" element={<Contact />} />
             </Routes>
         </Router>
