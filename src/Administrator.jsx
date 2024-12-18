@@ -6,6 +6,7 @@ import UpdateUserRole from './UpdateUserRole';
 import { Delete as DeleteIcon, Close as CloseIcon } from '@mui/icons-material';
 import SortIcon from '@mui/icons-material/Sort';
 import Navbar from './NavBar';
+import { useNavigate } from 'react-router-dom';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -17,6 +18,7 @@ const UserList = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filterRole, setFilterRole] = useState('');
     const [sortDescending, setSortDescending] = useState(true); 
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -114,6 +116,12 @@ const UserList = () => {
                     }}>
                         <Navbar/>
             <Box sx={{ width: '100%', mb: 1, display: 'flex', justifyContent: 'flex-end' }}> 
+                <Button 
+                    variant='contained'
+                    onClick={() => navigate('/services-manager')}
+                    sx={{left: '-45%'}}
+                >Services
+                </Button>
                     <TextField 
                         label="Search Users" 
                         variant="outlined" 
