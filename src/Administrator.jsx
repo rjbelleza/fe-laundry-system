@@ -157,6 +157,7 @@ const UserList = () => {
             </Box>
             <Paper sx={{
                         border: '2px solid black',
+                        width: '85vw',
                         borderRadius: '10px',
                         height: '470px',
                         overflow: 'auto',
