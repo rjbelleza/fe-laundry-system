@@ -199,7 +199,7 @@ const UserList = () => {
                                 <TableCell>{user.role}</TableCell>
                                 <TableCell>{user.address}</TableCell>
                                 <TableCell>{user.postal_code}</TableCell>
-                                <TableCell>{user.mobile}</TableCell>
+                                <TableCell>09{user.mobile}</TableCell>
                                 <TableCell>
                                     <Box fullWidth sx={{display: 'flex'}}>
                                         <Button onClick={() => handleOpen(user)} variant="contained" sx={{ marginRight: 2, zIndex: '1', backgroundColor: '#4d2836'}}>
@@ -247,7 +247,7 @@ const UserList = () => {
                                     <Typography sx={{ fontSize: '10px' }}>Postal Code:</Typography>{selectedUser.postal_code}
                                 </Typography>
                                 <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
-                                    <Typography sx={{ fontSize: '10px' }}>Mobile No.:</Typography>0{selectedUser.mobile}
+                                    <Typography sx={{ fontSize: '10px' }}>Mobile No.:</Typography>09{selectedUser.mobile}
                                 </Typography>
                                 <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
                                     <Typography sx={{ fontSize: '10px' }}>Created at:</Typography>{new Date(selectedUser.created_at).toLocaleString()}

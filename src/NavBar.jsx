@@ -21,7 +21,7 @@ const Navbar = () => {
 
     return (
         <Box sx={{height: '65px', position: 'absolute', top: '0px', right: '0px'}}>
-            <AppBar position="static" color='secondary' sx={{ top: '0px' }}>
+            <AppBar position="static" sx={{ top: '0px', backgroundColor: '#fff' }}>
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -31,7 +31,7 @@ const Navbar = () => {
                         aria-haspopup="true"
                         onClick={handleMenuOpen}
                     >
-                        <MenuIcon fontSize='large' />
+                        <MenuIcon fontSize='large' sx={{color: '#cf0254'}}/>
                     </IconButton>
                     <Menu
                         id="menu-appbar"

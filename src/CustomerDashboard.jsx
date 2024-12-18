@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from './services/api';
 import { Container, TextField, MenuItem, Button, Typography, Box, Snackbar, Alert } from '@mui/material';
 import OrderHistory from './OrderHistory';
 import Navbar from './NavBar';
+import './fonts/fonts.css';
 
 const OrderForm = () => {
     const [services, setServices] = useState([]);
     const [serviceId, setServiceId] = useState('');
     const [servicePrice, setServicePrice] = useState(0); // State for service price
     const [baskets, setBaskets] = useState(0); // Initialize baskets with 0
-    const [address, setAddress] = useState('');
-    const [postalCode, setPostalCode] = useState(''); // State for postal code
+    const [address, setAddress] = useState(''); // Default address state
+    const [postalCode, setPostalCode] = useState(''); // Default postal code state
     const [notes, setNotes] = useState(''); // State for notes
     const [paymentMode, setPaymentMode] = useState('');
     const [totalPrice, setTotalPrice] = useState(0); // State for total price
@@ -19,12 +20,12 @@ const OrderForm = () => {
     const [snackbarSeverity, setSnackbarSeverity] = useState('error');
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/services')
+        // Fetch services
+        api.get('/services')
             .then(response => {
-                // Ensure price is parsed as a number
                 const servicesData = response.data.map(service => ({
                     ...service,
-                    price: parseFloat(service.price)
+                    price: parseFloat(service.price) // Ensure price is parsed as a number
                 }));
                 setServices(servicesData);
             })
@@ -34,6 +35,25 @@ const OrderForm = () => {
                 setSnackbarSeverity('error');
                 setSnackbarOpen(true);
             });
+
+        // Fetch user address and postal code
+        const token = localStorage.getItem('auth_token'); // Get the token from local storage
+        api.get('/user', {
+            headers: {
+                'Authorization': `Bearer ${token}` // Include the token in the headers
+            }
+        })
+        .then(response => {
+            const { address, postal_code } = response.data;
+            setAddress(address);
+            setPostalCode(postal_code);
+        })
+        .catch(error => {
+            console.error('Error fetching user info:', error);
+            setSnackbarMessage('Error fetching user info. Please try again.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+        });
     }, []);
 
     useEffect(() => {
@@ -75,13 +95,12 @@ const OrderForm = () => {
         }
 
         const token = localStorage.getItem('auth_token'); // Get the token from local storage
-        console.log('Auth Token:', token); // Log token for debugging
 
-        axios.post('http://localhost:8000/api/orders', {
+        api.post('/orders', {
             service_id: serviceId,
             baskets,
             address,
-            postal_code: postalCode, // Include postal code
+            postal_code: postalCode.toString(), // Include postal code
             notes, // Include notes
             payment_mode: paymentMode,
         }, { 
@@ -124,8 +143,8 @@ const OrderForm = () => {
 
     return (
         <Container maxWidth="sm"
-            sx={{ border: 'solid 1px black', padding: '10px', borderRadius: '10px', backgroundColor: '#fff', }}>
-            <Typography variant="h6" component="h1" gutterBottom>
+            sx={{ border: 'solid 1px #919191', padding: '15px', borderRadius: '5px' }}>
+            <Typography variant="h6" component="h1" gutterBottom sx={{color: '#424142'}}>
                 Place Your Order
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate 
@@ -155,6 +174,7 @@ const OrderForm = () => {
                     onChange={handleBasketChange}
                     slotProps={{ min: 0 }}
                     size="small"
+                    sx={{marginBottom: '7px'}}
                 />
                 <TextField
                     id="address"
@@ -163,6 +183,7 @@ const OrderForm = () => {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     size="small"
+                    sx={{marginBottom: '7px'}}
                 />
                 <TextField
                     id="postalCode"
@@ -171,6 +192,7 @@ const OrderForm = () => {
                     value={postalCode}
                     onChange={handlePostalCodeChange}
                     size="small"
+                    sx={{marginBottom: '7px'}}
                 />
                 <TextField
                     id="notes"
@@ -181,6 +203,7 @@ const OrderForm = () => {
                     value={notes}
                     onChange={handleNotesChange}
                     size="small"
+                    sx={{marginBottom: '7px'}}
                 />
                 <TextField
                     select
@@ -205,8 +228,8 @@ const OrderForm = () => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="primary"
-                    sx={{ mt: 3, mb: 2, backgroundColor: '#38223d' }}
+                    sx={{ mt: 3, mb: 2, backgroundColor: '#cc0454' }}
+                    size='large'
                 >
                     Place Order
                 </Button>
@@ -234,10 +257,9 @@ const CustomerDashboard = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: '100vh',
-                backgroundColor: '#ffea9e',
             }}>
             <OrderForm />
-            <OrderHistory/>
+            <OrderHistory />
             <Navbar/>
         </Box>
     );

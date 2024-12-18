@@ -41,9 +41,12 @@ const ForgotPassword = () => {
                     backgroundSize: 'cover',
                 }}>
                 <Container maxWidth="xs" sx={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <Paper elevation={5} sx={{ height: '250px', padding: '30px' }}>
+                    <Paper elevation={5} sx={{ padding: '30px' }}>
                         <Typography variant="h5" component="h1" gutterBottom sx={{ fontFamily: 'Poppins-Bold' }}>
                             Forgot Password
+                        </Typography>
+                        <Typography sx={{ fontSize: '14px', marginTop: '15px', color: '#545454' }}>
+                            Enter your email, and we'll send a reset password link to your account.
                         </Typography>
                         <TextField
                             label="Email"

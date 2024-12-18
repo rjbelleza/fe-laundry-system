@@ -292,7 +292,7 @@ function Register() {
                                 onChange={(e) => setPostalCode(e.target.value)}
                                 size="small"
                                 sx={{
-                                    marginTop: '-10px',
+                                    marginTop: '-3px',
                                     width: '300px',
                                     '& .MuiOutlinedInput-root': {
                                         '& fieldset': {
