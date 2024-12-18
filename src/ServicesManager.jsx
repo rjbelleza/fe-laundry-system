@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Snackbar, Alert } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, 
+        TextField, Snackbar, Alert, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useNavigate } from 'react-router-dom';
 import api from './services/api';
@@ -12,6 +13,8 @@ const ServicesManager = () => {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
     const [newService, setNewService] = useState({ name: '', description: '', price: '' });
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [serviceIdToDelete, setServiceIdToDelete] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -47,6 +50,33 @@ const ServicesManager = () => {
             ...prevService,
             [name]: value,
         }));
+    };
+
+    const handleDeleteDialogOpen = (serviceId) => { 
+        setServiceIdToDelete(serviceId); 
+        setDeleteDialogOpen(true); 
+    };
+
+    const handleDeleteDialogClose = () => { 
+        setServiceIdToDelete(null); 
+        setDeleteDialogOpen(false); 
+    };
+
+    const handleDelete = () => { 
+        api.delete(`/services/${serviceIdToDelete}`) 
+            .then(response => { 
+                console.log(response.data.message); 
+                setServices(services.filter(service => service.id !== serviceIdToDelete)); 
+                setSnackbarOpen(true);
+                setSnackbarMessage('Service deleted successfully!');
+                handleDeleteDialogClose();
+            }) 
+            .catch(error => { 
+                console.error('There was an error deleting the service!', error); 
+                setSnackbarOpen(true);
+                setSnackbarMessage('Failed to delete service. Please try again.');
+                handleDeleteDialogClose();
+            }); 
     };
 
     const handleUpdate = async () => {
@@ -98,18 +128,20 @@ const ServicesManager = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <Button 
-                variant='contained' 
-                onClick={() => navigate('/admin')}
-                sx={{ left: '-25%', marginBottom: '10px' }}
-            >Users
-            </Button>
-            <Button 
-                variant='contained'
-                onClick={handleCreateDialogOpen}
-                sx={{ left: '-25%', marginBottom: '10px' }}
-            >Create Service
-            </Button>
+            <Box sx={{width: '50vw', display: 'flex', justifyContent: 'space-between'}}>
+                <Button 
+                    variant='contained' 
+                    onClick={() => navigate('/admin')}
+                    sx={{ marginBottom: '10px' }}
+                >User List
+                </Button>
+                <Button 
+                    variant='contained'
+                    onClick={handleCreateDialogOpen}
+                    sx={{ marginBottom: '10px' }}
+                >Add Service
+                </Button>
+            </Box>
             <Paper elevation={10} sx={{ padding: '10px', width: '800px', height: '400px', marginBottom: '-50px', overflow: 'auto' }} >
                 <Table>
                     <TableHead sx={{
@@ -134,7 +166,7 @@ const ServicesManager = () => {
                                 <TableCell>P{parseFloat(service.price).toFixed(2)}</TableCell>
                                 <TableCell sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
                                     <Button onClick={() => handleClickOpen(service)}>Update</Button>
-                                    <DeleteForeverIcon color='error'/>
+                                    <IconButton onClick={() => handleDeleteDialogOpen(service.id)} color='error'><DeleteForeverIcon/></IconButton>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -220,6 +252,23 @@ const ServicesManager = () => {
                     <Button onClick={handleCreateDialogClose} color="primary">Cancel</Button>
                     <Button onClick={handleCreateService} color="primary">Save</Button>
                 </DialogActions>
+            </Dialog>
+            <Dialog 
+                open={deleteDialogOpen} 
+                onClose={handleDeleteDialogClose} 
+                aria-labelledby="alert-dialog-title" 
+                aria-describedby="alert-dialog-description" 
+            > 
+                <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle> 
+                <DialogContent> 
+                    <DialogContentText id="alert-dialog-description"> 
+                        Are you sure you want to delete this service? This action cannot be undone. 
+                    </DialogContentText> 
+                </DialogContent> 
+                <DialogActions> 
+                    <Button onClick={handleDeleteDialogClose} color="primary"> Cancel </Button> 
+                    <Button onClick={handleDelete} color="error" autoFocus> Delete </Button> 
+                </DialogActions> 
             </Dialog>
 
             <Snackbar
