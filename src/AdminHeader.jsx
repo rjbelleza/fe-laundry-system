@@ -34,7 +34,7 @@ const AdminHeader = () => {
                 </Button>
                 <Button
                     variant='contained' 
-                    onClick={() => {navigate('/order-list')}}
+                    onClick={() => {navigate('/order-manager')}}
                     sx={{marginLeft: '50px', backgroundColor: '#ff7b00',}}
                 >
                     Order list
