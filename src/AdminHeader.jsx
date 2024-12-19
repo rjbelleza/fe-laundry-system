@@ -1,9 +1,13 @@
 import { Box, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 const AdminHeader = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const disableOrderListButton = ['/order-manager'];
+    const disableUserListButton = ['/admin'];
+    const disableServicesButton = ['/services-manager'];
 
     return(
         <Box 
@@ -22,6 +26,7 @@ const AdminHeader = () => {
                     variant='contained' 
                     onClick={() => {navigate('/services-manager')}}
                     sx={{marginLeft: '50px', backgroundColor: '#ff7b00',}}
+                    disabled={disableServicesButton.includes(location.pathname)}
                 >
                     Services
                 </Button>
@@ -29,6 +34,7 @@ const AdminHeader = () => {
                     variant='contained' 
                     onClick={() => {navigate('/admin')}}
                     sx={{marginLeft: '50px', backgroundColor: '#ff7b00',}}
+                    disabled={disableUserListButton.includes(location.pathname)}
                 >
                     User list
                 </Button>
@@ -36,6 +42,7 @@ const AdminHeader = () => {
                     variant='contained' 
                     onClick={() => {navigate('/order-manager')}}
                     sx={{marginLeft: '50px', backgroundColor: '#ff7b00',}}
+                    disabled={disableOrderListButton.includes(location.pathname)}
                 >
                     Order list
                 </Button>
