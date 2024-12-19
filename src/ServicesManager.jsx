@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, 
         TextField, Snackbar, Alert, IconButton } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useNavigate } from 'react-router-dom';
 import api from './services/api';
+import AdminHeader from './AdminHeader';
+import AddIcon from '@mui/icons-material/Add';
 
 const ServicesManager = () => {
     const [services, setServices] = useState([]);
@@ -15,7 +16,6 @@ const ServicesManager = () => {
     const [newService, setNewService] = useState({ name: '', description: '', price: '' });
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [serviceIdToDelete, setServiceIdToDelete] = useState(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -128,17 +128,13 @@ const ServicesManager = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <Box sx={{width: '50vw', display: 'flex', justifyContent: 'space-between'}}>
-                <Button 
-                    variant='contained' 
-                    onClick={() => navigate('/admin')}
-                    sx={{ marginBottom: '10px' }}
-                >User List
-                </Button>
+            <AdminHeader/>
+            <Box sx={{width: '50vw', display: 'flex', justifyContent: 'flex-end'}}>
                 <Button 
                     variant='contained'
                     onClick={handleCreateDialogOpen}
-                    sx={{ marginBottom: '10px' }}
+                    sx={{ marginBottom: '10px', }}
+                    startIcon={<AddIcon/>}
                 >Add Service
                 </Button>
             </Box>
