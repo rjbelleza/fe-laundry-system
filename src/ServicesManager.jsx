@@ -5,6 +5,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import api from './services/api';
 import AdminHeader from './AdminHeader';
 import AddIcon from '@mui/icons-material/Add';
+import Navbar from './NavBar';
 
 const ServicesManager = () => {
     const [services, setServices] = useState([]);
@@ -129,6 +130,7 @@ const ServicesManager = () => {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <AdminHeader/>
+            <Navbar/>
             <Box sx={{width: '50vw', display: 'flex', justifyContent: 'flex-end'}}>
                 <Button 
                     variant='contained'

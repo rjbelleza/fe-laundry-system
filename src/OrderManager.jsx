@@ -6,6 +6,7 @@ import UpdateOrder from './UpdateOrder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import AdminHeader  from './AdminHeader';
+import NavBar from './NavBar';
 
 
 const OrderManager = () => {
@@ -110,6 +111,7 @@ const OrderManager = () => {
                 height: '100vh',
             }}>
                 <AdminHeader/>
+                <NavBar/>
                 <Paper sx={{width: '1300px', height: '500px', overflow: 'auto', marginBottom: '-100px'}} elevation={7}>
                     {successMessage && ( 
                         <Alert severity="success" sx={{ marginBottom: 2 }} 
@@ -162,7 +164,7 @@ const OrderManager = () => {
                                             <Button 
                                                 variant='contained' 
                                                 size='small'
-                                                sx={{zIndex: '1'}}
+                                                sx={{zIndex: '1', backgroundColor: '#4d2836'}}
                                                 onClick={() => handleClickOpen(order)}
                                             >
                                                 Open
@@ -187,17 +189,23 @@ const OrderManager = () => {
                     </DialogTitle>
                     <DialogContent>
                         {selectedOrder ? (
-                            <Box sx={{width: '500px'}}>
-                                <Typography variant="body1">Customer: {selectedOrder.user.name}</Typography>
-                                <Typography variant="body1">Service: {selectedOrder.service.name}</Typography>
-                                <Typography variant="body1">Status: {statusMapping[selectedOrder.status]}</Typography>
-                                <Typography variant="body1">Total Price: P{selectedOrder.total_price}</Typography>
-                                <Typography variant="body1">Baskets: {selectedOrder.baskets}</Typography>
-                                <Typography variant="body1">Address: {selectedOrder.address}</Typography>
-                                <Typography variant="body1">Postal Code: {selectedOrder.postal_code}</Typography>
-                                <Typography variant="body1">Notes: {selectedOrder.notes}</Typography>
-                                <Typography variant="body1">Payment Mode: {paymentModeMapping[selectedOrder.payment_mode]}</Typography>
-                                <Typography variant="body1">Order Date: {new Date(selectedOrder.created_at).toLocaleString()}</Typography>
+                            <Box sx={{display: 'flex', gap: '10px', overflow: 'auto'}}>
+                                <Box sx={{display: 'flex', flexDirection: 'column', gap: '5px', minWidth: '230px', maxWidth: '50%'}}>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Customer: <br/><strong>{selectedOrder.user.name}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Address: <br/><strong>{selectedOrder.address}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', marginBottom: '10px' }}>Postal Code: <br/><strong>{selectedOrder.postal_code}</strong></Typography>
+                                    <Box sx={{display: 'flex', flexDirection: 'column', width: '100%', height: 'auto',}}>
+                                        <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', wordWrap: 'break-word', overflowWrap: 'break-word' }}>Notes: <br/><strong>{selectedOrder.notes}</strong></Typography>
+                                    </Box>
+                                </Box>
+                                <Box sx={{display: 'flex', flexDirection: 'column', gap: '5px', width: '100%'}}>
+                                <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Service: <br/><strong>{selectedOrder.service.name}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#fcba03', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Order Status: <br/><strong>{statusMapping[selectedOrder.status]}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Total Price: <br/><strong>P{selectedOrder.total_price}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Baskets: <br/><strong>{selectedOrder.baskets}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Payment Mode: <br/><strong>{paymentModeMapping[selectedOrder.payment_mode]}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Order Date: <br/><strong>{new Date(selectedOrder.created_at).toLocaleString()}</strong></Typography>
+                                </Box>
                             </Box>
                         ) : (
                             <Typography variant="body1">Loading order details...</Typography>
