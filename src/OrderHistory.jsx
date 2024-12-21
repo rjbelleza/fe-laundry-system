@@ -133,23 +133,31 @@ const OrderHistory = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {orders.map((order) => (
-                            <TableRow key={order.id}>
-                                <TableCell>{order.service.name}</TableCell>
-                                <TableCell>{statusMapping[order.status]}</TableCell>
-                                <TableCell>P{order.total_price}</TableCell>
-                                <TableCell>
-                                    <Button 
-                                        variant='contained' 
-                                        size='small'
-                                        sx={{ backgroundColor: '#38223d' }}
-                                        onClick={() => handleClickOpen(order)}
-                                    >
-                                        Open
-                                    </Button>
+                        {orders.length === 0 ? (
+                            <TableRow>
+                                <TableCell colSpan={4} sx={{ textAlign: 'center', color: '#999' }}>
+                                    No orders found.
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        ) : (
+                            orders.map((order) => (
+                                <TableRow key={order.id}>
+                                    <TableCell>{order.service.name}</TableCell>
+                                    <TableCell>{statusMapping[order.status]}</TableCell>
+                                    <TableCell>P{order.total_price}</TableCell>
+                                    <TableCell>
+                                        <Button 
+                                            variant='contained' 
+                                            size='small'
+                                            sx={{ backgroundColor: '#38223d' }}
+                                            onClick={() => handleClickOpen(order)}
+                                        >
+                                            Open
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </Paper>

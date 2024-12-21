@@ -1,5 +1,5 @@
 import { Box, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText,
-    Typography, IconButton, Alert, AlertTitle } from '@mui/material';
+    Typography, IconButton, Alert, AlertTitle, TextField, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import api from './services/api';
 import UpdateOrder from './UpdateOrder';
@@ -8,27 +8,39 @@ import CloseIcon from '@mui/icons-material/Close';
 import AdminHeader  from './AdminHeader';
 import NavBar from './NavBar';
 
-
 const OrderManager = () => {
     const [orders, setOrders] = useState([]);
+    const [filteredOrders, setFilteredOrders] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [open, setOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [orderIdToDelete, setOrderIdToDelete] = useState(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
 
     useEffect(() => {
         const fetchOrders = async () => {
             try {
                 const response = await api.get(`/fetchOrders`);
                 console.log("API Response:", response.data); // Log the response data
-                setOrders(response.data);
+                const sortedOrders = response.data.sort((a, b) => b.id - a.id); // Sort in descending order
+                setOrders(sortedOrders);
+                setFilteredOrders(sortedOrders); // Initialize filtered orders
             } catch (error) {
                 console.error("Error fetching orders:", error);
             }
         };
         fetchOrders();
     }, []);
+
+    useEffect(() => {
+        const filtered = orders.filter(order => 
+            order.id.toString().includes(searchQuery) && 
+            (selectedStatus === '' || order.status === selectedStatus) // Filter by selected status or show all
+        );
+        setFilteredOrders(filtered);
+    }, [searchQuery, selectedStatus, orders]);
 
     const handleUpdate = (updatedOrder, setSuccessMessage) => {
         console.log(`Updating order with ID: ${updatedOrder.id}, New Status: ${updatedOrder.status}`);
@@ -67,7 +79,7 @@ const OrderManager = () => {
         failed: 'Failed',
     };
 
-    const paymentModeMapping ={
+    const paymentModeMapping = {
         cash: 'Cash On Delivery',
         credit_card: 'Credit Card',
         paypal: 'Paypal',
@@ -88,10 +100,11 @@ const OrderManager = () => {
             .then(response => { 
                 console.log(response.data.message); 
                 setOrders(orders.filter(order => order.id !== orderIdToDelete)); 
+                setFilteredOrders(filteredOrders.filter(order => order.id !== orderIdToDelete)); // Update filtered orders
                 setSuccessMessage('Order deleted successfully!');
                 handleDeleteDialogClose();
             }) 
-            .catch(error => { 
+            .catch (error => { 
                 console.error('There was an error deleting the order!', error); 
                 setSuccessMessage('Failed to delete order. Please try again.');
                 handleDeleteDialogClose();
@@ -105,6 +118,7 @@ const OrderManager = () => {
     return(
         <Box sx={{
                 display: 'flex',
+                flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%', 
@@ -112,7 +126,32 @@ const OrderManager = () => {
             }}>
                 <AdminHeader/>
                 <NavBar/>
-                <Paper sx={{width: '1300px', height: '500px', overflow: 'auto', marginBottom: '-100px'}} elevation={7}>
+                <Box sx={{width: '100%', display: 'flex', justifyContent: 'flex-end',}}>
+                    <TextField
+                        select
+                        label="Filter by Status"
+                        value={selectedStatus}
+                        onChange={(e) => setSelectedStatus(e.target.value)}
+                        sx={{ margin: 1, width: '180px', }}
+                        size='small'
+                    >
+                        <MenuItem value="">All</MenuItem> {/* Add this line for 'All' option */}
+                        {Object.keys(statusMapping).map((status) => (
+                            <MenuItem key={status} value={status}>
+                                {statusMapping[status]}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField 
+                            variant="outlined" 
+                            placeholder="Search Order by ID" 
+                            value={searchQuery} 
+                            onChange={(e) => setSearchQuery(e.target.value)} 
+                            sx={{ margin: 1, width: '165px', marginRight: '70px' }} 
+                            size='small'
+                        />
+                </Box>
+                <Paper sx={{width: '1300px', height: '490px', overflow: 'auto', marginBottom: '-70px'}} elevation={7}>
                     {successMessage && ( 
                         <Alert severity="success" sx={{ marginBottom: 2 }} 
                             action={ 
@@ -150,36 +189,44 @@ const OrderManager = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {orders.map((order) => (
-                                <TableRow key={order.id} sx={{textAlign: 'center'}}>
-                                    <TableCell sx={{textAlign: 'center'}}>{order.id}</TableCell>
-                                    <TableCell sx={{textAlign: 'center'}}>{order.user_id}</TableCell>
-                                    <TableCell sx={{textAlign: 'center'}}>{order.service.name}</TableCell>
-                                    <TableCell sx={{textAlign: 'center'}}>{order.baskets}</TableCell>
-                                    <TableCell sx={{textAlign: 'center'}}>P{order.total_price}</TableCell>
-                                    <TableCell sx={{textAlign: 'center'}}>{statusMapping[order.status]}</TableCell>
-                                    <TableCell sx={{textAlign: 'center'}}>{new Date(order.created_at).toLocaleString()}</TableCell>
-                                    <TableCell sx={{textAlign: 'center'}}>
-                                        <Box fullWidth sx={{display: 'flex', justifyContent: 'space-around'}}>
-                                            <Button 
-                                                variant='contained' 
-                                                size='small'
-                                                sx={{zIndex: '1', backgroundColor: '#4d2836'}}
-                                                onClick={() => handleClickOpen(order)}
-                                            >
-                                                Open
-                                            </Button>
-                                            <IconButton 
-                                                onClick={() => handleDeleteDialogOpen(order.id)} 
-                                                color="error"
-                                                disabled={order.status !== 'cancelled'}
-                                            > 
-                                                <DeleteIcon /> 
-                                            </IconButton>
-                                        </Box>
+                            {filteredOrders.length > 0 ? (
+                                filteredOrders.map((order) => (
+                                    <TableRow key={order.id} sx={{textAlign: 'center'}}>
+                                        <TableCell sx={{textAlign: 'center'}}>{order.id}</TableCell>
+                                        <TableCell sx={{textAlign: 'center'}}>{order.user_id}</TableCell>
+                                        <TableCell sx={{textAlign: 'center'}}>{order.service.name}</TableCell>
+                                        <TableCell sx={{textAlign: 'center'}}>{order.baskets}</TableCell>
+                                        <TableCell sx={{textAlign: 'center'}}>P{order.total_price}</TableCell>
+                                        <TableCell sx={{textAlign: 'center'}}>{statusMapping[order.status]}</TableCell>
+                                        <TableCell sx={{textAlign: 'center'}}>{new Date(order.created_at).toLocaleString()}</TableCell>
+                                        <TableCell sx={{textAlign: 'center'}}>
+                                            <Box fullWidth sx={{display: 'flex', justifyContent: 'space-around'}}>
+                                                <Button 
+                                                    variant='contained' 
+                                                    size='small'
+                                                    sx={{zIndex: '1', backgroundColor: '#4d2836'}}
+                                                    onClick={() => handleClickOpen(order)}
+                                                >
+                                                    Open
+                                                </Button>
+                                                <IconButton 
+                                                    onClick={() => handleDeleteDialogOpen(order.id)} 
+                                                    color="error"
+                                                    disabled={order.status !== 'cancelled'}
+                                                > 
+                                                    <DeleteIcon /> 
+                                                </IconButton>
+                                            </Box>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={8} sx={{ textAlign: 'center', padding: '20px' }}>
+                                        <Typography variant="h6">No orders found.</Typography>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            )}
                         </TableBody>
                     </Table>
                 </Paper>
@@ -190,7 +237,7 @@ const OrderManager = () => {
                     <DialogContent>
                         {selectedOrder ? (
                             <Box sx={{display: 'flex', gap: '10px', overflow: 'auto'}}>
-                                <Box sx={{display: 'flex', flexDirection: 'column', gap: '5px', minWidth: '230px', maxWidth: '50%'}}>
+                                <Box sx={{display: 'flex', flexDirection: 'column' , gap: '5px', minWidth: '230px', maxWidth: '50%'}}>
                                     <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Customer: <br/><strong>{selectedOrder.user.name}</strong></Typography>
                                     <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Address: <br/><strong>{selectedOrder.address}</strong></Typography>
                                     <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', marginBottom: '10px' }}>Postal Code: <br/><strong>{selectedOrder.postal_code}</strong></Typography>
@@ -199,7 +246,7 @@ const OrderManager = () => {
                                     </Box>
                                 </Box>
                                 <Box sx={{display: 'flex', flexDirection: 'column', gap: '5px', width: '100%'}}>
-                                <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Service: <br/><strong>{selectedOrder.service.name}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Service: <br/><strong>{selectedOrder.service.name}</strong></Typography>
                                     <Typography variant="body1" sx={{ backgroundColor: '#fcba03', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Order Status: <br/><strong>{statusMapping[selectedOrder.status]}</strong></Typography>
                                     <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Total Price: <br/><strong>P{selectedOrder.total_price}</strong></Typography>
                                     <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Baskets: <br/><strong>{selectedOrder.baskets}</strong></Typography>
@@ -232,7 +279,7 @@ const OrderManager = () => {
                     <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle> 
                     <DialogContent> 
                         <DialogContentText id="alert-dialog-description"> 
-                            Are you sure you want to delete this user? This action cannot be undone. 
+                            Are you sure you want to delete this order? This action cannot be undone. 
                         </DialogContentText> 
                     </DialogContent> 
                     <DialogActions> 

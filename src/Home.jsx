@@ -158,34 +158,7 @@ const Body = () => {
                             Create Account
                         </Button>
                     </Box>
-                    <Box sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: '100%', 
-                            height: '80px', 
-                            backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                            marginTop: '30px',
-                        }}
-                    >
-                        <Typography sx={{
-                                        display: 'flex', 
-                                        gap: '5px', 
-                                        color: 'rgba(250, 250, 250)',
-                                        alignItems: 'center',
-                                    }}>
-                            We are 
-                            <Box sx={{
-                                    padding: '10px',
-                                    backgroundColor: 'green',
-                                    borderRadius: '30px',
-                                }}>
-                                Open
-                            </Box>
-                        </Typography>
-                    </Box>
                 </Container>
-
             </Box>
         </Box>
     );
