@@ -67,7 +67,7 @@ function Register() {
                 email,
                 password,
                 address,
-                mobile: mobile.slice(2),
+                mobile: mobile.slice(1),
                 postal_code: postalCode,
             });
 

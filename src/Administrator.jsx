@@ -239,22 +239,22 @@ const UserList = () => {
                                     sx={{ marginBottom: '20px', marginTop: '-20px' }}>Manage User</Typography>
                                 <Box sx={{ marginBottom: '30px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
                                     <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
-                                        <Typography sx={{ fontSize: '10px' }}>Name:</Typography>{selectedUser.name}
+                                        <Typography sx={{ fontSize: '13px' }}>Name:<br/><strong>{selectedUser.name}</strong></Typography>
                                     </Typography>
                                     <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
-                                        <Typography sx={{ fontSize: '10px' }}>Email:</Typography>{selectedUser.email}
+                                        <Typography sx={{ fontSize: '13px' }}>Email:<br/><strong>{selectedUser.email}</strong></Typography>
                                     </Typography>
                                     <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
-                                        <Typography sx={{ fontSize: '10px' }}>Address:</Typography>{selectedUser.address}
+                                        <Typography sx={{ fontSize: '13px' }}>Address:<br/><strong>{selectedUser.address}</strong></Typography>
                                     </Typography>
                                     <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
-                                        <Typography sx={{ fontSize: '10px' }}>Postal Code:</Typography>{selectedUser.postal_code}
+                                        <Typography sx={{ fontSize: '13px' }}>Postal Code:<br/><strong>{selectedUser.postal_code}</strong></Typography>
                                     </Typography>
                                     <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
-                                        <Typography sx={{ fontSize: '10px' }}>Mobile No.:</Typography>09{selectedUser.mobile}
+                                        <Typography sx={{ fontSize: '13px' }}>Mobile No.:<br/><strong>0{selectedUser.mobile}</strong></Typography>
                                     </Typography>
                                     <Typography sx={{ backgroundColor: '#e8d3e3', padding: '5px', paddingLeft: '10px', borderRadius: '10px' }}>
-                                        <Typography sx={{ fontSize: '10px' }}>Created at:</Typography>{new Date(selectedUser.created_at).toLocaleString()}
+                                        <Typography sx={{ fontSize: '13px' }}>Created at:<br/><strong>{new Date(selectedUser.created_at).toLocaleString()}</strong></Typography>
                                     </Typography>
                                 </Box>
                                 <UpdateUserRole user={selectedUser} onUpdate={handleUpdate} />

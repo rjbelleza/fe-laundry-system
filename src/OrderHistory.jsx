@@ -170,19 +170,20 @@ const OrderHistory = () => {
                         {selectedOrder ? (
                             <Box sx={{display: 'flex', gap: '10px', overflow: 'auto'}}>
                                 <Box sx={{display: 'flex', flexDirection: 'column', gap: '5px', width: '100%'}}>
-                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Service: <br/><strong>{selectedOrder.service.name}</strong></Typography>
-                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Baskets: <br/><strong>{selectedOrder.baskets}</strong></Typography>
-                                    <Typography variant="body1" sx={{ backgroundColor: '#fcba03', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Status: <br/><strong>{statusMapping[selectedOrder.status]}</strong></Typography>
-                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Payment Mode: <br/><strong>{paymentModeMapping[selectedOrder.payment_mode]}</strong></Typography>
-                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Total Price: <br/><strong>P{selectedOrder.total_price}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Service: <br/><strong>{selectedOrder.service.name}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Baskets: <br/><strong>{selectedOrder.baskets}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#fcba03', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Status: <br/><strong>{statusMapping[selectedOrder.status]}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Payment Mode: <br/><strong>{paymentModeMapping[selectedOrder.payment_mode]}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Total Price: <br/><strong>P{selectedOrder.total_price}</strong></Typography>
                                 </Box>
                                 <Box sx={{display: 'flex', flexDirection: 'column', gap: '5px', minWidth: '230px', maxWidth: '50%'}}>
-                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Address: <br/><strong>{selectedOrder.address}</strong></Typography>
-                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Postal Code: <br/><strong>{selectedOrder.postal_code}</strong></Typography>
+                                <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Product Selected: <br/><strong>{selectedOrder.product.name}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Address: <br/><strong>{selectedOrder.address}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Postal Code: <br/><strong>{selectedOrder.postal_code}</strong></Typography>
                                     <Box sx={{display: 'flex', flexDirection: 'column', width: '100%', height: 'auto',}}>
-                                        <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', wordWrap: 'break-word', overflowWrap: 'break-word' }}>Notes: <br/><strong>{selectedOrder.notes}</strong></Typography>
+                                        <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '13px' }}>Notes: <br/><strong>{selectedOrder.notes}</strong></Typography>
                                     </Box>
-                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px' }}>Order Date: <br/><strong>{new Date(selectedOrder.created_at).toLocaleString()}</strong></Typography>
+                                    <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Order Date: <br/><strong>{new Date(selectedOrder.created_at).toLocaleString()}</strong></Typography>
                                 </Box>
                             </Box>
                         ) : (

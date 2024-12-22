@@ -8,13 +8,16 @@ import './fonts/fonts.css';
 const OrderForm = () => {
     const [services, setServices] = useState([]);
     const [serviceId, setServiceId] = useState('');
-    const [servicePrice, setServicePrice] = useState(0); // State for service price
-    const [baskets, setBaskets] = useState(0); // Initialize baskets with 0
-    const [address, setAddress] = useState(''); // Default address state
-    const [postalCode, setPostalCode] = useState(''); // Default postal code state
-    const [notes, setNotes] = useState(''); // State for notes
+    const [products, setProducts] = useState([]); 
+    const [productId, setProductId] = useState(''); 
+    const [servicePrice, setServicePrice] = useState(0);
+    const [productPrice, setProductPrice] = useState(0);
+    const [baskets, setBaskets] = useState(0);
+    const [address, setAddress] = useState('');
+    const [postalCode, setPostalCode] = useState('');
+    const [notes, setNotes] = useState('');
     const [paymentMode, setPaymentMode] = useState('');
-    const [totalPrice, setTotalPrice] = useState(0); // State for total price
+    const [totalPrice, setTotalPrice] = useState(0);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('error');
@@ -25,7 +28,7 @@ const OrderForm = () => {
             .then(response => {
                 const servicesData = response.data.map(service => ({
                     ...service,
-                    price: parseFloat(service.price) // Ensure price is parsed as a number
+                    price: parseFloat(service.price)
                 }));
                 setServices(servicesData);
             })
@@ -36,11 +39,26 @@ const OrderForm = () => {
                 setSnackbarOpen(true);
             });
 
+    api.get('/products')
+            .then(response => {
+                const productsData = response.data.map(product => ({
+                    ...product,
+                    price: parseFloat(product.price)
+                }));
+                setProducts(productsData);
+            })
+            .catch(error => {
+                console.error('Error fetching services:', error);
+                setSnackbarMessage('Error fetching services. Please try again.');
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            });
+
         // Fetch user address and postal code
-        const token = localStorage.getItem('auth_token'); // Get the token from local storage
+        const token = localStorage.getItem('auth_token');
         api.get('/user', {
             headers: {
-                'Authorization': `Bearer ${token}` // Include the token in the headers
+                'Authorization': `Bearer ${token}`
             }
         })
         .then(response => {
@@ -58,9 +76,11 @@ const OrderForm = () => {
 
     useEffect(() => {
         // Calculate total price whenever serviceId or baskets change
-        const price = servicePrice * (baskets ? parseInt(baskets, 10) : 0);
+        const price1 = servicePrice * (baskets ? parseInt(baskets, 10) : 0);
+        const price2 = productPrice * (baskets ? parseInt(baskets, 10) : 0);
+        const price = price1 + price2;
         setTotalPrice(price.toFixed(2));
-    }, [servicePrice, baskets]);
+    }, [servicePrice, productPrice, baskets]);
 
     const handleServiceChange = (e) => {
         const selectedServiceId = e.target.value;
@@ -76,6 +96,13 @@ const OrderForm = () => {
         }
     };
 
+    const handleProductsChange = (e) => {
+        const selectedProductId = e.target.value;
+        setProductId(selectedProductId);
+        const selectedProduct = products.find(product => product.id === selectedProductId);
+        setProductPrice(selectedProduct ? selectedProduct.price : 0);
+    };
+
     const handlePostalCodeChange = (e) => {
         setPostalCode(e.target.value);
     };
@@ -87,29 +114,32 @@ const OrderForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!serviceId || baskets === 0 || !address || !postalCode || !paymentMode) {
+        if (!productId || !serviceId || baskets === 0 || !address || !postalCode || !paymentMode) {
             setSnackbarMessage('Please fill out all fields.');
             setSnackbarSeverity('error');
             setSnackbarOpen(true);
             return;
         }
 
-        const token = localStorage.getItem('auth_token'); // Get the token from local storage
+        const token = localStorage.getItem('auth_token');
 
         api.post('/orders', {
             service_id: serviceId,
+            product_id: productId, 
             baskets,
             address,
-            postal_code: postalCode.toString(), // Include postal code
-            notes, // Include notes
+            postal_code: postalCode.toString(),
+            notes,
             payment_mode: paymentMode,
+            total_price: totalPrice,
         }, { 
             headers: { 
-                'Authorization': `Bearer ${token}` // Include the token in the headers 
+                'Authorization': `Bearer ${token}`
             }
         })
         .then(response => {
             console.log('Order created successfully', response.data);
+            // Reset form fields
             setServiceId('');
             setBaskets(0);
             setAddress('');
@@ -118,6 +148,7 @@ const OrderForm = () => {
             setPaymentMode('');
             setServicePrice(0);
             setTotalPrice(0);
+            setProducts([]); // Reset products
             setSnackbarMessage('Order created successfully.');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
@@ -143,12 +174,12 @@ const OrderForm = () => {
 
     return (
         <Container maxWidth="sm"
-            sx={{ border: 'solid 1px #919191', padding: '15px', borderRadius: '5px' }}>
+            sx={{ border: 'solid 1px #919191', padding: '15px', borderRadius: '5px', height: '100vh' }}>
             <Typography variant="h6" component="h1" gutterBottom sx={{color: '#424142'}}>
                 Place Your Order
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate 
-                sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: '10px', height: '100%' }}>
                 <TextField
                     select
                     id="service"
@@ -174,8 +205,22 @@ const OrderForm = () => {
                     onChange={handleBasketChange}
                     slotProps={{ min: 0 }}
                     size="small"
-                    sx={{marginBottom: '7px'}}
                 />
+                <TextField
+                    select
+                    label="Select Product"
+                    value={productId}
+                    onChange={handleProductsChange}
+                    fullWidth
+                    size="small"
+                    sx={{marginBottom: '5px'}}
+                >
+                    {products.map((product) => (
+                        <MenuItem key={product.id} value={product.id}>
+                            {product.name} - ₱{parseFloat(product.price).toFixed(2)}
+                        </MenuItem>
+                    ))}
+                </TextField>
                 <TextField
                     id="address"
                     label="Address"
@@ -199,7 +244,7 @@ const OrderForm = () => {
                     label="Notes"
                     fullWidth
                     multiline
-                    rows={3} // Set the height for multiline input
+                    rows={3}
                     value={notes}
                     onChange={handleNotesChange}
                     size="small"
@@ -219,7 +264,6 @@ const OrderForm = () => {
                     <MenuItem value="paypal">PayPal</MenuItem>
                 </TextField>
                 
-                {/* Total Price Section */}
                 <Box sx={{ mt: 2 }}>
                     <Typography variant="h6">Total Price: ₱{totalPrice}</Typography>
                 </Box>
