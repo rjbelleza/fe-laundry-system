@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Table, Alert, Snackbar, TableHead, TableRow, TableCell, TableBody, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, FormControl, InputLabel, } from '@mui/material';
+import { Box, Table, Alert, Snackbar, TableHead, Typography, TableRow, TableCell, TableBody, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, FormControl, InputLabel, } from '@mui/material';
 import api from './services/api';
 import NavBar from './NavBar';
 
@@ -24,16 +24,34 @@ const CourierDashboard = () => {
         failed: 'Failed',
     };
 
-    useEffect(() => {
-        api.get('/orders/courier')
-            .then(response => {
-                // Sort the orders by created_at in descending order
-                const sortedOrders = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-                setOrders(sortedOrders);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the orders!", error);
-            });
+    const allowedStatuses = ['out_for_delivery', 'ready_for_pickup', 'delivered']; // Only allow these statuses
+
+    useEffect(() => { 
+        const fetchOrders = async () => { 
+            try { 
+                const token = localStorage.getItem('auth_token'); 
+                if (!token) { 
+                    console.error("No auth token found"); 
+                    return; 
+                } 
+                
+                const response = await api.get('/orders/courier', { 
+                    headers: { 
+                        'Authorization': `Bearer ${token}` 
+                    } 
+                }); 
+                
+                if (Array.isArray(response.data)) { 
+                    // Sort the orders by created_at in descending order 
+                    const sortedOrders = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); 
+                    setOrders(sortedOrders); 
+                } else { 
+                    console.error("The response data is not an array!"); 
+                } 
+            } catch (error) { 
+                console.error("There was an error fetching the orders!", error); 
+            } 
+        }; fetchOrders(); 
     }, []);
 
     const paymentModeMapping = {
@@ -101,7 +119,9 @@ const CourierDashboard = () => {
                     backgroundColor: '#c20450',
                     boxShadow: 'rgba(194, 4, 86, 0.24) 0px 3px 8px',
                     zIndex: '30',
-                }} />
+                }} >
+                    <Typography sx={{marginLeft: '50px', color: '#fff', fontSize: '30px'}}>Courier</Typography>
+                </Box>
             <NavBar />
             <Paper sx={{ width: '1300px', height: '490px', overflow: 'auto', marginBottom: '-70px' }} elevation={7}>
                 <Table>
@@ -163,14 +183,14 @@ const CourierDashboard = () => {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Update Order</DialogTitle>
                 <DialogContent>
+                <Typography sx={{ fontSize: '12px', marginLeft: '10px' }}>Status</Typography>
                     <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel>Status</InputLabel>
                         <Select
                             name="status"
                             value={selectedOrder?.status || ''}
                             onChange={handleChange}
                         >
-                            {Object.keys(statusMapping).map((key) => (
+                            {allowedStatuses.map((key) => (
                                 <MenuItem key={key} value={key}>
                                     {statusMapping[key]}
                                 </MenuItem>

@@ -131,16 +131,16 @@ const ServicesManager = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <AdminHeader/>
             <Navbar/>
-            <Box sx={{width: '50vw', display: 'flex', justifyContent: 'flex-end'}}>
+            <Box sx={{width: '70vw', display: 'flex', justifyContent: 'flex-end'}}>
                 <Button 
                     variant='contained'
                     onClick={handleCreateDialogOpen}
-                    sx={{ marginBottom: '10px', }}
+                    sx={{ marginBottom: '5px', backgroundColor: '#45264a' }}
                     startIcon={<AddIcon/>}
                 >Add Service
                 </Button>
             </Box>
-            <Paper elevation={10} sx={{ padding: '10px', width: '800px', height: '400px', marginBottom: '-50px', overflow: 'auto' }} >
+            <Paper elevation={10} sx={{ padding: '10px', width: '1000px', height: '450px', marginBottom: '-50px', overflow: 'auto' }} >
                 <Table>
                     <TableHead sx={{
                                     position: 'sticky',
@@ -163,7 +163,7 @@ const ServicesManager = () => {
                                 <TableCell>{service.description}</TableCell>
                                 <TableCell>P{parseFloat(service.price).toFixed(2)}</TableCell>
                                 <TableCell sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-                                    <Button onClick={() => handleClickOpen(service)}>Update</Button>
+                                    <Button onClick={() => handleClickOpen(service)} variant='contained' size='small' sx={{backgroundColor: '#4d2836'}}>Update</Button>
                                     <IconButton onClick={() => handleDeleteDialogOpen(service.id)} color='error'><DeleteForeverIcon/></IconButton>
                                 </TableCell>
                             </TableRow>

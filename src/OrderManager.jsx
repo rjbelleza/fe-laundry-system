@@ -241,7 +241,16 @@ const OrderManager = () => {
                                     <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '12px' }}>Address: <br/><strong>{selectedOrder.address}</strong></Typography>
                                     <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', marginBottom: '10px', fontSize: '12px' }}>Postal Code: <br/><strong>{selectedOrder.postal_code}</strong></Typography>
                                     <Box sx={{display: 'flex', flexDirection: 'column', width: '100%', height: 'auto',}}>
-                                        <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px',minHeight: '50px', borderRadius: '10px', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '12px' }}>Notes: <br/><strong>{selectedOrder.notes}</strong></Typography>
+                                        <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px',minHeight: '50px', borderRadius: '10px', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '12px', marginBottom: '6px' }}>Notes: <br/><strong>{selectedOrder.notes}</strong></Typography>
+                                        {(selectedOrder.status === 'ready_for_pickup' || selectedOrder.status === 'in_progress') || (selectedOrder.status === 'out_for_delivery' || selectedOrder.status === 'delivered') ? (
+                                             <>
+                                                <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px', marginBottom: '6px' }}>Courier ID: <br/><strong>{selectedOrder.courier_id}</strong></Typography>
+                                                <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px', marginBottom: '6px' }}>Out Date: <br/><strong>{selectedOrder.out_date}</strong></Typography>
+                                                <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px', marginBottom: '6px' }}>Return Date: <br/><strong>{selectedOrder.return_date}</strong></Typography>
+                                            </>
+                                        ) : (
+                                            <></>
+                                        )}
                                     </Box>
                                 </Box>
                                 <Box sx={{display: 'flex', flexDirection: 'column', gap: '5px', width: '100%'}}>

@@ -21,6 +21,7 @@ const UpdateUserRole = ({ user, onUpdate }) => {
                 >
                     <MenuItem value="admin">Admin</MenuItem>
                     <MenuItem value="customer">Customer</MenuItem>
+                    <MenuItem value="courier">Courier</MenuItem>
                 </Select>
             </FormControl>
             <Box sx={{width: '100%', display: 'flex', alignItems: 'center'}}>

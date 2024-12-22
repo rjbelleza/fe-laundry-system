@@ -36,12 +36,10 @@ const OrderHistory = () => {
     useEffect(() => {
         api.get('/orders')
             .then(response => {
-                console.log(response.data); // Log the response to inspect the data structure 
-                if (Array.isArray(response.data)) { 
-                    const sortedOrders = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); 
-                    setOrders(sortedOrders); 
-                } else { 
-                    console.error("The response data is not an array!"); } })
+                // Sort the orders by created_at in descending order
+                const sortedOrders = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                setOrders(sortedOrders);
+            })
             .catch(error => {
                 console.error("There was an error fetching the orders!", error);
             });
@@ -106,7 +104,7 @@ const OrderHistory = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginRight: '50px', width: '600px', height: '100%', }}>
             <Typography variant="h6" component="h2" gutterBottom
                 sx={{ marginLeft: '10px', color: '#424142' }}>
-                Order History
+                Booking History
             </Typography>
             <Paper 
                 sx={{ 
@@ -186,7 +184,7 @@ const OrderHistory = () => {
                                         <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '13px' }}>Notes: <br/><strong>{selectedOrder.notes}</strong></Typography>
                                     </Box>
                                     <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Order Date: <br/><strong>{new Date(selectedOrder.created_at).toLocaleString()}</strong></Typography>
-                                    {(selectedOrder.courier_id !== null ) || (selectedOrder.status === 'ready_for_pickup' || selectedOrder.status === 'in_progress') ? (
+                                    {(selectedOrder.status === 'ready_for_pickup' || selectedOrder.status === 'in_progress') || (selectedOrder.status === 'out_for_delivery' || selectedOrder.status === 'delivered') ? (
                                         <>
                                             <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Courier ID: <br/><strong>{selectedOrder.courier_id}</strong></Typography>
                                             <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Out Date: <br/><strong>{selectedOrder.out_date}</strong></Typography>
@@ -224,7 +222,11 @@ const OrderHistory = () => {
                                 variant='contained'
                                 size='small'
                                 onClick={() => handleDeleteOrder(selectedOrder.id)} 
-                                disabled={selectedOrder.status !== 'cancelled' || selectedOrder.status !== 'completed'} 
+                                disabled={(selectedOrder.status === 'pending' || selectedOrder.status === 'confirmed')
+                                            || (selectedOrder.status === 'in_progress' || selectedOrder.status === 'out_for_delivery')
+                                            || (selectedOrder.status === 'ready_for_pickup' || selectedOrder.status === 'delivered')
+                                            || (selectedOrder.status === 'out_for_delivery' || selectedOrder.status === 'on_hold')
+                                }
                                 sx={{ ml: 2 }} > 
                                 <DeleteIcon /> 
                                 Delete History

@@ -139,6 +139,7 @@ const UserList = () => {
                                         value=""><em>All</em></MenuItem> 
                                         <MenuItem value="admin">Admin</MenuItem> 
                                         <MenuItem value="customer">Customer</MenuItem> 
+                                        <MenuItem value="courier">Courier</MenuItem> 
                                 </Select> 
                         </FormControl> 
                         <Button 

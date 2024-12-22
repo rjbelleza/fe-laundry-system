@@ -18,7 +18,7 @@ const UpdateOrder = ({ order, onUpdate, }) => {
             onUpdate({ ...order, status: orderStatus, courier_id: courierId }, setSuccessMessage);
         } catch (error) {
             console.error(error);
-            setSuccessMessage('Failed to update order');
+            setSuccessMessage('Failed to update order', error);
         }
         
     };
@@ -36,6 +36,8 @@ const UpdateOrder = ({ order, onUpdate, }) => {
                     <MenuItem value="confirmed">Confirmed</MenuItem>
                     <MenuItem value="on_hold">On Hold</MenuItem>
                     <MenuItem value="in_progress">In Progress</MenuItem>
+                    <MenuItem value="out_for_delivery">Out For Delivery</MenuItem>
+                    <MenuItem value="completed">Completed</MenuItem>
                     <MenuItem value="failed">Failed</MenuItem>
                 </Select>
             </FormControl>
@@ -52,7 +54,7 @@ const UpdateOrder = ({ order, onUpdate, }) => {
                     type="submit"
                     variant="contained"
                     sx={{ backgroundColor: '#4d1c2f' }}
-                    disabled={orderStatus === order.status && courierId === order.courier_id}
+                    disabled={(orderStatus === order.status && courierId === order.courier_id)}
                 >
                     Update Status
                 </Button>

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from './services/api';
-import { Container, TextField, MenuItem, Button, Typography, Box, Snackbar, Alert } from '@mui/material';
+import { Container, TextField, MenuItem, Button, Typography, Box, Snackbar, Alert, Paper } from '@mui/material';
 import OrderHistory from './OrderHistory';
 import Navbar from './NavBar';
 import './fonts/fonts.css';
+import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 
 const OrderForm = () => {
     const [services, setServices] = useState([]);
@@ -304,7 +306,13 @@ const CustomerDashboard = () => {
                 padding: '30px',
             }}>
             <OrderForm />
+            <Box sx={{height: '80%'}}>
+                <Box sx={{display: 'flex', gap: '20px',}}>
+                    <Button variant='contained' size='large' startIcon={<LocalLaundryServiceIcon/>} sx={{backgroundColor: '#f28705'}}>View Services</Button>
+                    <Button variant='contained' size='large' startIcon={<ShoppingBasketIcon/>}>View Products</Button>
+                </Box>
             <OrderHistory />
+            </Box>
             <Navbar/>
         </Box>
     );
