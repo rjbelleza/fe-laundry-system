@@ -190,8 +190,10 @@ const OrderHistory = () => {
                                             <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Out Date: <br/><strong>{selectedOrder.out_date}</strong></Typography>
                                             <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Return Date: <br/><strong>{selectedOrder.return_date}</strong></Typography>
                                         </>
-                                    ) : selectedOrder.status === 'cancelled' ?(
+                                    ) : selectedOrder.status === 'cancelled' ? (
                                         <Typography variant="body1" sx={{ backgroundColor: '#e85b56', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}><strong>Order Cancelled</strong></Typography>
+                                    ) : selectedOrder.status === 'confirmed' ? (
+                                        <Typography variant="body1" sx={{ backgroundColor: '#72d0d4', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}><strong>Waiting for courier confirmation...</strong></Typography>
                                     ) : (
                                         <Typography variant="body1" sx={{ backgroundColor: '#fcba03', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}><strong>Validating order...</strong></Typography>
                                     ) }
