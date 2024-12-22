@@ -52,7 +52,7 @@ const UpdateOrder = ({ order, onUpdate, }) => {
                     type="submit"
                     variant="contained"
                     sx={{ backgroundColor: '#4d1c2f' }}
-                    disabled={orderStatus === order.status || courierId === order.courier_id}
+                    disabled={orderStatus === order.status && courierId === order.courier_id}
                 >
                     Update Status
                 </Button>

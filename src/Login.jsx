@@ -36,6 +36,8 @@ const Login = () => {
                     navigate('/admin'); 
                 } else if (userRole === 'customer') { 
                     navigate('/dashboard'); 
+                }else if (userRole === 'courier') { 
+                    navigate('/courier-dashboard');
                 } else { 
                     navigate('/'); 
                 }

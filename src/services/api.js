@@ -19,4 +19,17 @@ api.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
+api.interceptors.response.use(function (response) { 
+    // Any status code that lies within the range of 2xx causes this function to trigger 
+    return response; 
+}, function (error) { 
+    if (error.response.status === 401) { 
+        // Handle token expiration or unauthorized access 
+        console.error("Unauthorized access - perhaps the token has expired?"); 
+        // Optionally, redirect to login or refresh token 
+        window.location.href = '/login'; 
+    } 
+    return Promise.reject(error);
+});
+
 export default api;

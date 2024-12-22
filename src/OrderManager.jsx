@@ -48,7 +48,6 @@ const OrderManager = () => {
             .then(response => {
                 console.log(response.data.message);
                 setOrders(orders.map(order => order.id === updatedOrder.id ? updatedOrder : order));
-                setSuccessMessage('Order status updated successfully!');
             })
             .catch(error => {
                 console.error('There was an error updating the order status!', error);
