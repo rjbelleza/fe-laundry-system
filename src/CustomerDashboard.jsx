@@ -301,6 +301,7 @@ const CustomerDashboard = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: '100vh',
+                padding: '30px',
             }}>
             <OrderForm />
             <OrderHistory />

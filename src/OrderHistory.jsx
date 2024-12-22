@@ -101,7 +101,7 @@ const OrderHistory = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginRight: '50px', width: '600px', height: '100%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginRight: '50px', width: '600px', height: '100%', }}>
             <Typography variant="h6" component="h2" gutterBottom
                 sx={{ marginLeft: '10px', color: '#424142' }}>
                 Order History
@@ -184,6 +184,17 @@ const OrderHistory = () => {
                                         <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '13px' }}>Notes: <br/><strong>{selectedOrder.notes}</strong></Typography>
                                     </Box>
                                     <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Order Date: <br/><strong>{new Date(selectedOrder.created_at).toLocaleString()}</strong></Typography>
+                                    {selectedOrder.courier_id !== null ? (
+                                        <>
+                                            <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Courier ID: <br/><strong>{selectedOrder.courier_id}</strong></Typography>
+                                            <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Out Date: <br/><strong>{selectedOrder.out_date}</strong></Typography>
+                                            <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Return Date: <br/><strong>{selectedOrder.return_date}</strong></Typography>
+                                        </>
+                                    ) : selectedOrder.status === 'cancelled' ?(
+                                        <Typography variant="body1" sx={{ backgroundColor: '#e85b56', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}><strong>Order Cancelled</strong></Typography>
+                                    ) : (
+                                        <Typography variant="body1" sx={{ backgroundColor: '#fcba03', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}><strong>Validating order...</strong></Typography>
+                                    ) }
                                 </Box>
                             </Box>
                         ) : (
