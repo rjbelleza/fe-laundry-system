@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Table, Alert, Snackbar, TableHead, Typography, TableRow, TableCell, TableBody, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, FormControl, InputLabel, } from '@mui/material';
+import { Box, Table, Alert, Snackbar, TableHead, Typography, TableRow, TableCell, TableBody, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, FormControl, } from '@mui/material';
 import api from './services/api';
 import NavBar from './NavBar';
 
@@ -24,7 +24,7 @@ const CourierDashboard = () => {
         failed: 'Failed',
     };
 
-    const allowedStatuses = ['out_for_delivery', 'ready_for_pickup', 'delivered']; // Only allow these statuses
+    const allowedStatuses = ['ready_for_pickup', 'in_progress', 'out_for_delivery', 'delivered']; // Only allow these statuses
 
     useEffect(() => { 
         const fetchOrders = async () => { 
