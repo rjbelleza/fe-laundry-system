@@ -184,7 +184,7 @@ const OrderHistory = () => {
                                         <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '13px' }}>Notes: <br/><strong>{selectedOrder.notes}</strong></Typography>
                                     </Box>
                                     <Typography variant="body1" sx={{ backgroundColor: '#e8d3e3', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Order Date: <br/><strong>{new Date(selectedOrder.created_at).toLocaleString()}</strong></Typography>
-                                    {(selectedOrder.status === 'ready_for_pickup' || selectedOrder.status === 'in_progress') || (selectedOrder.status === 'out_for_delivery' || selectedOrder.status === 'delivered') ? (
+                                    {(selectedOrder.status === 'ready_for_pickup' || selectedOrder.status === 'in_progress') || (selectedOrder.status === 'out_for_delivery' || selectedOrder.status === 'delivered') || (selectedOrder.status === 'completed') ? (
                                         <>
                                             <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Courier ID: <br/><strong>{selectedOrder.courier_id}</strong></Typography>
                                             <Typography variant="body1" sx={{ backgroundColor: '#69e856', padding: '10px', paddingLeft: '10px', borderRadius: '10px', fontSize: '13px' }}>Out Date: <br/><strong>{selectedOrder.out_date}</strong></Typography>
